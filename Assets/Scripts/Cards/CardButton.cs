@@ -15,16 +15,18 @@ public class CardButton : MonoBehaviour
 
     private void Start()
     {
-        
-
         SetDescription();
         SetImageUpgraded();
-
     }
 
     public void SetCardSO(CardSO cardSO)
     {
         card.cardSO = cardSO;
+    }
+
+    public void SetPosition(int x, int y)
+    {
+        transform.position = new Vector2(x, y);
     }
     
     public void UpgradeLevel()
