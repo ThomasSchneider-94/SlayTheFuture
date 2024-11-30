@@ -18,17 +18,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-
-    public void setPlayerDeck(List<Card> playerCards)
-    {
-        this.playerDeck = playerCards;
-    }
-
-    public void setEnemyDeck(List<Card> enemyCards)
-    {
-        this.enemyDeck = enemyCards;
-    }
-
     private Stack<Card> getCurrentHand(List<Card> selectedCards)
     {
         Stack<Card> cardStack = new Stack<Card>();
@@ -50,9 +39,6 @@ public class BattleManager : MonoBehaviour
 
     private void startBattle()
     {
-        playerDeck = new List<Card>(); //TODO : get the current deck of the player
-        enemyDeck = new List<Card>(); //TODO : get the current decl of the enemy
-
         List<Card> playerSelectedCards = new List<Card>(); //TODO : get the selected cards of the player
         List<Card> enemySelectedCards = new List<Card>(); //TODO : get the selected cards of the enemy
 
