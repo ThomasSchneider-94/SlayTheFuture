@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    public static BattleManager instance { get; private set; }
+    public static BattleManager battleManagerInstance { get; private set; }
 
     private List<Card> playerDeck;
     private List<Card> enemyDeck;
@@ -12,13 +12,13 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null && instance != this)
+        if (battleManagerInstance != null && battleManagerInstance != this)
         {
             Destroy(this);
         }
         else
         {
-            instance = this;
+            battleManagerInstance = this;
         }
     }
 
@@ -74,7 +74,7 @@ public class BattleManager : MonoBehaviour
 
         if (playerHand.Count > 0)
         {
-
+            
         }
     }
 
