@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 
-[CreateAssetMenu()]
+
 public class CardSO : ScriptableObject
 {
     [SerializeField] private int MAX_CARD_LEVEL = 2;
