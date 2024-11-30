@@ -7,9 +7,9 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
-    private CardSO cardSO;
+    public CardSO cardSO;
 
-    private void SetCardSO(CardSO cardSO)
+    public void SetCardSO(CardSO cardSO)
     {
         this.cardSO = cardSO;
     }

@@ -1,10 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
+
+    [SerializeField] CardSO dmgCard;
+    [SerializeField] CardSO shieldCard;
+    [SerializeField] CardSO HealCard;
+    [SerializeField] CardSO PierceCard;
+    [SerializeField] CardSO PoisonCard;
 
     private int currentFight;
     private int maxFightNumber;
@@ -12,6 +21,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private int maxPlayedCard = 3;
 
     [SerializeField] private BattlePreparation battlePrep;
+
+    Dictionary<string, List<Card>> allDeckCards = new Dictionary<string, List<Card>>();
 
     private void Awake()
     {
@@ -22,13 +33,64 @@ public class BattleManager : MonoBehaviour
         else
         {
             Instance = this;
-        }
+        }   
+
     }
+
+    private List<Card> ParseJson()
+    {
+        Dictionary<string, string[]> allDeckData = JsonUtility.FromJson<Dictionary<string,string[]>>(Resources.Load("DeckBuilds").ToString());
+
+
+        List<Card> playerDeck = new List<Card>();
+        foreach (string key in allDeckData.Keys)
+        {
+            foreach (string cardname in allDeckData[key])
+            {
+                Card card = new Card();
+                switch (cardname)
+                {
+                    case "DamageCard":
+                        card.SetCardSO(dmgCard);
+                        break;
+                    case "PierceCard":
+                        card.SetCardSO(PierceCard);
+                        break;
+                    case "ShieldCard":
+                        card.SetCardSO(shieldCard);
+                        break;
+                    case "HealCard":
+                        card.SetCardSO(HealCard);
+                        break;
+                    case "PoisonCard":
+                        card.SetCardSO(PoisonCard);
+                        break;
+
+
+                }
+
+                allDeckCards[key].Add(card);
+            }
+        }
+
+        playerDeck = allDeckCards["BalancedDeck"];
+        return playerDeck;
+
+    }
+
+    
+
 
     private void InitiateBattle()
     {
         // initialiser le deck de l'enemy
         // Shuffle les decks du player et de l'enemy
+        if (Player.playerInstance.getCurrentDeck() == null)
+        {
+            Player.playerInstance.setCurrentDeck(ParseJson());
+        }
+
+        Enemy.enemyInstance.setCurrentDeck(allDeckCards["AttackerDeck"]);
 
         // TODO : initialiser le deck de l'enemy à partir du JSON
 
@@ -39,17 +101,17 @@ public class BattleManager : MonoBehaviour
         battlePrep.ResetBattle();
     }
 
-    public void PlayTurn(List<CardSO> playerCards)
+    public void PlayTurn(List<Card> playerCards)
     {
         // Joueur les cartes de manières séquentielles -> OK
 
-        foreach (CardSO card in playerCards)
+        foreach (Card card in playerCards)
         {
-            Debug.Log(card.cardName);
+            Debug.Log(card.cardSO.cardName);
         }
 
-        List<CardSO> enemyHand = Enemy.enemyInstance.getCurrentHand();
-        List<CardSO> enemyCards = new List<CardSO>();
+        List<Card> enemyHand = Enemy.enemyInstance.getCurrentHand();
+        List<Card> enemyCards = new List<Card>();
         int numberOfEnemyCard = 0;
 
         for (int i = 0; i < maxPlayedCard; i++)
@@ -61,15 +123,15 @@ public class BattleManager : MonoBehaviour
 
         while (playerCards.Count > 0 && numberOfEnemyCard > 0) 
         {
-            CardSO currentPlayerCard = playerCards[0];
+            Card currentPlayerCard = playerCards[0];
             playerCards.RemoveAt(0);
 
-            CardSO currentEnemyCard = enemyCards[0];
+            Card currentEnemyCard = enemyCards[0];
             enemyCards.RemoveAt(0);
             numberOfEnemyCard--;
 
-            currentPlayerCard.OnUseCard(Player.playerInstance);
-            currentEnemyCard.OnUseCard(Enemy.enemyInstance);
+            currentPlayerCard.cardSO.OnUseCard(Player.playerInstance);
+            currentEnemyCard.cardSO.OnUseCard(Enemy.enemyInstance);
         }
 
         // On vérifie si l'enemy a encore des cartes à jouer.
@@ -78,9 +140,9 @@ public class BattleManager : MonoBehaviour
         {
             while(enemyCards.Count > 0)
             {
-                CardSO currentEnemyCards = enemyCards[0];
+                Card currentEnemyCards = enemyCards[0];
                 enemyCards.RemoveAt(0);
-                currentEnemyCards.OnUseCard(Enemy.enemyInstance);
+                currentEnemyCards.cardSO.OnUseCard(Enemy.enemyInstance);
             }
         }
 
@@ -134,4 +196,15 @@ public class BattleManager : MonoBehaviour
         currentFight++;
         InitiateBattle();
     }
+}
+
+
+class JsonTemp
+{
+    public string[] BalancedDeck;
+    public string[] AttackerDeck;
+    public string[] DefenderDeck;
+    public string[] PierceDeck;
+    public string[] PoisonDeck;
+    public string[] HealDeck;
 }

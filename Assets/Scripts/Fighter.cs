@@ -15,11 +15,11 @@ public class Fighter : MonoBehaviour
     private List<(int, int)> poison = new();
 
 
-    private List<CardSO> deck;
+    private List<Card> deck;
     private int currentCardIndex = 0;
 
-    private List<CardSO> currentHand = new List<CardSO>();
-    private List<CardSO> currentDeck = new List<CardSO>();
+    private List<Card> currentHand = new List<Card>();
+    private List<Card> currentDeck = new List<Card>();
 
     private void Start()
     {
@@ -31,7 +31,7 @@ public class Fighter : MonoBehaviour
     public void resetCurrentDeck()
     {
         currentDeck = null;
-        currentDeck = new List<CardSO>();
+        currentDeck = new List<Card>();
 
         foreach (var card in deck)
         {
@@ -41,13 +41,22 @@ public class Fighter : MonoBehaviour
         ShuffleList(currentDeck);        
     }
 
-    public void ShuffleList(List<CardSO> list){
+    public void setCurrentDeck(List<Card> deck) {
+        currentDeck = deck;
+    }
+
+    public List<Card> getCurrentDeck()
+    {
+        return currentDeck;
+    }
+
+    public void ShuffleList(List<Card> list){
         
     int n = list.Count;  
         while (n > 1) {  
             n--;  
             int k = Random.Range(0, n);
-            CardSO tmp = list[k];  
+            Card tmp = list[k];  
             list[k] = list[n];  
             list[n] = tmp;  
         }
@@ -61,7 +70,7 @@ public class Fighter : MonoBehaviour
         }
 
         while ((currentDeck.Count > 0) && (currentHand.Count < 5)){
-            CardSO card = currentDeck[0];
+            Card card = currentDeck[0];
             currentDeck.RemoveAt(0);
             currentHand.Add(card);
         }
@@ -92,23 +101,23 @@ public class Fighter : MonoBehaviour
         return shield;
     }
 
-    public void addCard(CardSO card)
+    public void addCard(Card card)
     {
         deck[currentCardIndex] = card;
         currentCardIndex++;
     }
 
-     public void discardCard(CardSO card)
+     public void discardCard(Card card)
     {
         currentDeck.Remove(card);
     }
 
-    public void addCardToHand(CardSO cardToAdd)
+    public void addCardToHand(Card cardToAdd)
     {
         // TODO : � impl�menter
     }
 
-    public List<CardSO> getCurrentHand()
+    public List<Card> getCurrentHand()
     {
         return currentHand;
     }
