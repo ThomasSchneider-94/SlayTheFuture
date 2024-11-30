@@ -1,5 +1,7 @@
+using Microsoft.Unity.VisualStudio.Editor;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -10,7 +12,7 @@ public class CardSO : ScriptableObject
 {
     [SerializeField] private int MAX_CARD_LEVEL = 3;
 
-    private int currentLevel;
+    public int currentLevel;
     public string cardName;
     public int[] damage = new int[3];
     public int[] shield= new int[3];
@@ -18,7 +20,7 @@ public class CardSO : ScriptableObject
     public int[] poisonDamage = new int[3];
     public int[] poisonDuration = new int[3];
     public ElementType elementType;
-    public Sprite sprite;
+    public Sprite[] sprite = new Sprite[3];
     public string description;
 
     public void Init(CardSO card)
@@ -42,6 +44,7 @@ public class CardSO : ScriptableObject
         {
             receiver = Enemy.Instance;
         }
+
         else {
             receiver = Player.Instance;
         }
@@ -71,7 +74,6 @@ public class CardSO : ScriptableObject
         }*/
 
 
-        receiver.SetShield(damage[currentLevel]);
         thrower.SetShield(shield[currentLevel]);
         thrower.SetHP(heal[currentLevel]);
     }
@@ -106,6 +108,45 @@ public class CardSO : ScriptableObject
     {
         receiver.AddPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
     }
+
+    void shieldBreak(Fighter receiver)
+    {
+        receiver.SetShield(receiver.GetShield());
+    }
+
+    void inflictIce(Fighter receiver)
+    {
+        //Todo
+    }
+
+    void inflictFire(Fighter receiver)
+    {
+        shieldBreak(receiver);
+    }
+
+    void inflictGroud(Fighter receiver)
+    {
+        //Todo
+    }
+
+    void inflictPlant(Fighter receiver)
+    {
+        //Todo
+    }
+
+    void inflictPoison(Fighter receiver)
+    {
+        receiver.AddPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
+    }
+
+    public void upgardeCard()
+    {
+        if (currentLevel < 2)
+            currentLevel++;
+        
+    }
+
+    
 }
 
 

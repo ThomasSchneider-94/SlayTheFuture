@@ -1,0 +1,34 @@
+{
+    "name": "Input",
+    "maps": [
+        {
+            "name": "menu",
+            "id": "49f04a47-382a-4cbb-86cc-176e7bf1a53f",
+            "actions": [
+                {
+                    "name": "Return",
+                    "type": "Button",
+                    "id": "0c0de733-6b4f-44df-bf58-321a6bcdeaaa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b48a3cc4-6c5f-4725-8f77-450af03122b4",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Return",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

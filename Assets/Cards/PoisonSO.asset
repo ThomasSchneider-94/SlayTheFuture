@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: PoisonSO
   m_EditorClassIdentifier: 
   MAX_CARD_LEVEL: 3
-  cardName: Poison
+  currentLevel: 0
+  cardName: PoisonCard
   damage: 000000000000000000000000
   shield: 000000000000000000000000
   heal: 000000000000000000000000
   poisonDamage: 020000000300000003000000
   poisonDuration: 020000000200000003000000
-  elementType: 0
-  sprite: {fileID: 0}
+  elementType: 5
+  sprite:
+  - {fileID: 21300000, guid: 15b37b4a14771ad4188fff9fec23953c, type: 3}
+  - {fileID: 21300000, guid: fced882e94f694c46aa20b5621add4df, type: 3}
+  - {fileID: 21300000, guid: c49b88917fe10ec4296c8bdafc44da3b, type: 3}
   description: 

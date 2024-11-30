@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: PierceSO
   m_EditorClassIdentifier: 
   MAX_CARD_LEVEL: 3
-  cardName: Pierce
+  currentLevel: 0
+  cardName: PierceCard
   damage: 020000000300000004000000
   shield: 000000000000000000000000
   heal: 000000000000000000000000
   poisonDamage: 000000000000000000000000
   poisonDuration: 000000000000000000000000
   elementType: 0
-  sprite: {fileID: 0}
+  sprite:
+  - {fileID: 21300000, guid: 3f975190fedcbe6478e62b42e88f8462, type: 3}
+  - {fileID: 21300000, guid: 54e29d4bbc6bc334286c4625aa1eae8f, type: 3}
+  - {fileID: 21300000, guid: 885dfa0ffb3821d4b96f9633007f77d5, type: 3}
   description: 
