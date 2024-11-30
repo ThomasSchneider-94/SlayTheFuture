@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.U2D;
 
 
 
@@ -27,19 +29,19 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Instance { get; private set; }
     
     [SerializeField] private int maxPlayedCard = 3;
+    [SerializeField] private int maxFightNumber;
     [SerializeField] private BattlePreparation battlePrep;
+    private int currentFight;
 
     [Header("CardSO")]
-    [SerializeField] CardSO dmgCard;
-    [SerializeField] CardSO shieldCard;
-    [SerializeField] CardSO HealCard;
-    [SerializeField] CardSO PierceCard;
-    [SerializeField] CardSO PoisonCard;
+    [SerializeField] private CardSO dmgCard;
+    [SerializeField] private CardSO shieldCard;
+    [SerializeField] private CardSO HealCard;
+    [SerializeField] private CardSO PierceCard;
+    [SerializeField] private CardSO PoisonCard;
 
-    private int currentFight;
-    private int maxFightNumber;
 
-    private readonly Dictionary<string, List<CardSO>> allDeckCards = new();
+    private readonly Dictionary<string, List<Card>> allDeckCards = new();
 
     private void Awake()
     {
@@ -56,9 +58,9 @@ public class BattleManager : MonoBehaviour
     private void Start()
     {
         InitializeDecks();
-
+        
         Player.Instance.InitDeck(allDeckCards["BalancedDeck"]);
-
+        
         InitiateBattle();
     }
 
@@ -69,12 +71,10 @@ public class BattleManager : MonoBehaviour
         foreach (JsonDeck deck in allDeckData.Decks)
         {
             allDeckCards[deck.name] = new();
-            foreach (string card in deck.content)
+            foreach (string cardName in deck.content)
             {
-                CardSO cardSO = ScriptableObject.CreateInstance<CardSO>();
-
                 // Switch for a single variable
-                CardSO modelCard = card switch
+                CardSO modelCard = cardName switch
                 {
                     "DamageCard" => dmgCard,
                     "PierceCard" => PierceCard,
@@ -83,9 +83,8 @@ public class BattleManager : MonoBehaviour
                     "PoisonCard" => PoisonCard,
                     _ => dmgCard,
                 };
-
-                cardSO.Init(modelCard);
-                allDeckCards[deck.name].Add(cardSO);
+                Card card = new(modelCard);
+                allDeckCards[deck.name].Add(card);
             }
         }
     }
@@ -106,41 +105,41 @@ public class BattleManager : MonoBehaviour
         battlePrep.ResetBattle();
     }
 
-    public void PlayTurn(List<CardSO> playerCards)
+    public void PlayTurn(List<Card> playerCards)
     {
         // Joueur les cartes de manières séquentielles -> OK
 
-        List<CardSO> enemyCards = Enemy.Instance.GetPlayedCards();
+        List<Card> enemyCards = Enemy.Instance.GetPlayedCards();
 
         while (playerCards.Count > 0 && enemyCards.Count > 0) 
         {
-            CardSO currentPlayerCard = playerCards[0];
+            Card currentPlayerCard = playerCards[0];
             playerCards.RemoveAt(0);
             Debug.Log("Player: " + currentPlayerCard.cardName);
 
-            CardSO currentEnemyCard = enemyCards[0];
+            Card currentEnemyCard = enemyCards[0];
             enemyCards.RemoveAt(0);
             Debug.Log("Enemy: " + currentEnemyCard.cardName);
 
-            currentPlayerCard.OnUseCard(Player.Instance);
-            currentEnemyCard.OnUseCard(Enemy.Instance);
+            currentPlayerCard.OnUseCard(Player.Instance, Enemy.Instance);
+            currentEnemyCard.OnUseCard(Enemy.Instance, Player.Instance);
         }
 
         // On vérifie si l'enemy a encore des cartes à jouer.
         // Cas ou le joueur décide de ne pas joueur trois cartes
         while (enemyCards.Count > 0)
         {
-            CardSO currentEnemyCard = enemyCards[0];
+            Card currentEnemyCard = enemyCards[0];
             enemyCards.RemoveAt(0);
             Debug.Log("Enemy: " + currentEnemyCard.cardName);
-            currentEnemyCard.OnUseCard(Enemy.Instance);
+            currentEnemyCard.OnUseCard(Enemy.Instance, Player.Instance);
         }
         while (playerCards.Count > 0)
         {
-            CardSO currentPlayerCard = playerCards[0];
+            Card currentPlayerCard = playerCards[0];
             playerCards.RemoveAt(0);
             Debug.Log("Player: " + currentPlayerCard.cardName);
-            currentPlayerCard.OnUseCard(Enemy.Instance);
+            currentPlayerCard.OnUseCard(Player.Instance, Enemy.Instance);
         }
 
         // On passe à la logique post-tour
@@ -162,9 +161,9 @@ public class BattleManager : MonoBehaviour
         Enemy.Instance.SetShield(Enemy.Instance.GetShield());
 
         // Si le joueur n'a pas utilisé de perception se tour, lui augmenter
-        if (!Player.Instance.getPerceptionStatus())
+        if (!Player.Instance.GetPerceptionStatus())
         {
-            Player.Instance.addPerception();
+            Player.Instance.AddPerception();
         }
 
         // Vérifier si il reste des cartes dans le deck du joueur et dans le deck de l'enemy

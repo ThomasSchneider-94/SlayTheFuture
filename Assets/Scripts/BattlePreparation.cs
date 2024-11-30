@@ -25,16 +25,16 @@ public class BattlePreparation : MonoBehaviour
     [SerializeField] private List<Transform> enemyCardPosition;
 
     [Header("Prefab")]
-    [SerializeField] private MultiLayerButton cardPrefab;
+    [SerializeField] private CardButton cardPrefab;
     [SerializeField] private Sprite hidenCard;
 
     // Player Cards
-    private readonly List<MultiLayerButton> playerCardButtons = new();
+    private readonly List<CardButton> playerCardButtons = new();
     private readonly List<int> placedButtons = new();
 
     // Enemy cards
-    private readonly List<MultiLayerButton> enemyCardButtons = new();
-    private List<bool> enemyCardRevealed = new();
+    private readonly List<CardButton> enemyCardButtons = new();
+    private readonly List<bool> enemyCardRevealed = new();
 
     #region Init
     // Start is called before the first frame update
@@ -65,25 +65,25 @@ public class BattlePreparation : MonoBehaviour
 
     private void CreatePlayerCardButton(int index)
     {
-        MultiLayerButton button = GameObject.Instantiate<MultiLayerButton>(cardPrefab);
+        CardButton button = GameObject.Instantiate<CardButton>(cardPrefab);
 
         button.transform.SetParent(handLayout.transform);
         button.transform.localScale = Vector2.one;
 
-        button.onClick.AddListener(delegate { ChangeButtonPosition(index); });
+        button.GetComponent<Button>().onClick.AddListener(delegate { ChangeButtonPosition(index); });
 
         playerCardButtons.Add(button);
     }
 
     private void CreateEnemyCardButton(int index)
     {
-        MultiLayerButton button = GameObject.Instantiate<MultiLayerButton>(cardPrefab);
+        CardButton button = GameObject.Instantiate<CardButton>(cardPrefab);
 
         button.transform.SetParent(enemyCardPosition[index]);
         button.transform.localScale = Vector2.one;
         button.transform.localPosition = Vector2.zero;
 
-        button.onClick.AddListener(delegate { RevealCard(index); });
+        button.GetComponent<Button>().onClick.AddListener(delegate { RevealCard(index); });
 
         enemyCardButtons.Add(button);
         enemyCardRevealed.Add(false);
@@ -100,15 +100,14 @@ public class BattlePreparation : MonoBehaviour
 
         // Player Cards
         int i = 0;
-        List<CardSO> playerHand = player.GetCurrentHand();
+        List<Card> playerHand = player.GetCurrentHand();
+        Debug.Log(playerHand.Count);
 
         while (i < playerHand.Count)
         {
             playerCardButtons[i].gameObject.SetActive(true);
 
-
-            // TODO
-
+            playerCardButtons[i].ApplyCard(playerHand[i]);
 
             i++;
         }
@@ -120,19 +119,20 @@ public class BattlePreparation : MonoBehaviour
 
         // Enemy Cards
         int j = 0;
-        List<CardSO> enemyCards = enemy.GetCurrentHand();
+        List<Card> enemyHand = enemy.GetCurrentHand();
 
-        while (j < playerHand.Count)
+        while (j < enemyHand.Count)
         {
-            playerCardButtons[j].gameObject.SetActive(true);
+            enemyCardButtons[j].gameObject.SetActive(true);
 
-            // TODO
+            enemyCardButtons[j].ApplyCard(enemyHand[j]);
+            enemyCardButtons[j].HideCard();
 
             j++;
         }
-        while (j < player.GetMaxHandSize())
+        while (j < BattleManager.Instance.GetMaxPlayedCard())
         {
-            playerCardButtons[j].gameObject.SetActive(false);
+            enemyCardButtons[j].gameObject.SetActive(false);
             j++;
         }
     }
@@ -174,15 +174,23 @@ public class BattlePreparation : MonoBehaviour
     {
         if (enemyCardRevealed[index]) { return; }
 
-        Debug.Log("Reveal");
-        enemyCardRevealed[index] = true;
+        if (player.GetCurrentPerception() > 0)
+        {
+            Debug.Log(player.GetCurrentPerception());
+
+            player.UsePerception(1);
+
+            enemyCardButtons[index].ApplyCard();
+
+            enemyCardRevealed[index] = true;
+        }
     }
 
     public void PlayTurn()
     {
-        List<CardSO> cardsToPlay = new();
-        List<CardSO> cardsInHand = new();
-        List<CardSO> playerHand = player.GetCurrentHand();
+        List<Card> cardsToPlay = new();
+        List<Card> cardsInHand = new();
+        List<Card> playerHand = player.GetCurrentHand();
 
         for (int i = 0; i < playerHand.Count; i++)
         {

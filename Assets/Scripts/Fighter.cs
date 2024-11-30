@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Fighter : MonoBehaviour
@@ -9,17 +10,17 @@ public abstract class Fighter : MonoBehaviour
     [SerializeField] protected int maxHandSize;
     [SerializeField] protected int maxDeckSize;
 
-    [Header("Hand Size")]
+    [Header("Stats")]
     [SerializeField] protected int maxHP;
     protected int hp;
     private int shield;
 
-    private List<(int, int)> poison = new();
+    private readonly List<(int, int)> poison = new();
 
-    private List<CardSO> deck;
+    private List<Card> deck;
 
-    protected List<CardSO> currentHand = new();
-    private List<CardSO> currentDeck = new();
+    protected List<Card> currentHand = new();
+    private readonly List<Card> currentDeck = new();
 
     private void Start()
     {
@@ -28,11 +29,12 @@ public abstract class Fighter : MonoBehaviour
         hp = maxHP;
     }
 
-    public void InitDeck(List<CardSO> baseDeck)
+    public void InitDeck(List<Card> baseDeck)
     {
         this.deck = baseDeck;
     }
-    public void ChangeDeckCard(CardSO oldCard, CardSO newCard)
+
+    public void ChangeDeckCard(Card oldCard, Card newCard)
     {
         deck.Remove(oldCard);
         deck.Add(newCard);
@@ -41,23 +43,17 @@ public abstract class Fighter : MonoBehaviour
     #region Current Deck
     public void ResetCurrentDeck()
     {
-        Debug.Log("Reset");
         currentDeck.Clear();
-
-        Debug.Log(deck.Count);
 
         foreach (var card in deck)
         {
-            CardSO cardSO = ScriptableObject.CreateInstance<CardSO>();
-            cardSO.Init(card);
-
-            currentDeck.Add(cardSO);
+            currentDeck.Add(card.Clone());
         }
 
         ShuffleList(currentDeck);
     }
 
-    private static void ShuffleList(List<CardSO> list)
+    private static void ShuffleList(List<Card> list)
     {
 
         int n = list.Count;
@@ -65,18 +61,12 @@ public abstract class Fighter : MonoBehaviour
         {
             n--;
             int k = Random.Range(0, n);
-            CardSO tmp = list[k];
-            list[k] = list[n];
-            list[n] = tmp;
+            (list[k], list[n]) = (list[n], list[k]);
         }
     }
 
     public virtual void Draw()
     {
-        Debug.Log(currentDeck.Count);
-        Debug.Log(currentHand.Count);
-
-
         if (currentDeck.Count == 0 && currentHand.Count == 0)
         {
             ResetCurrentDeck();
@@ -84,12 +74,9 @@ public abstract class Fighter : MonoBehaviour
 
         while (currentDeck.Count > 0 && currentHand.Count < maxHandSize)
         {
-            CardSO card = currentDeck[0];
+            Card card = currentDeck[0];
             currentDeck.RemoveAt(0);
             currentHand.Add(card);
-
-            Debug.Log(currentDeck.Count);
-
         }
     }
 
@@ -98,19 +85,19 @@ public abstract class Fighter : MonoBehaviour
         return (currentDeck.Count <= 0);
     }
 
-    public List<CardSO> GetCurrentDeck()
+    public List<Card> GetCurrentDeck()
     {
         return currentDeck;
     }
     #endregion Current Deck
 
     #region Hand
-    public void SetCurrentHand(List<CardSO> hand)
+    public void SetCurrentHand(List<Card> hand)
     {
         this.currentHand = hand;
     }
 
-    public List<CardSO> GetCurrentHand()
+    public List<Card> GetCurrentHand()
     {
         return currentHand;
     }
@@ -161,6 +148,11 @@ public abstract class Fighter : MonoBehaviour
     public int GetMaxHandSize()
     {
         return maxHandSize;
+    }
+
+    public List<Card> GetDeck()
+    {
+        return deck;
     }
     #endregion Getter
 }

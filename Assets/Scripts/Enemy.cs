@@ -6,7 +6,7 @@ public class Enemy : Fighter
 {
     public static Enemy Instance { get; private set; }
 
-    private readonly List<CardSO> playedCards = new();
+    private readonly List<Card> playedCards = new();
 
     private void Awake()
     {
@@ -41,6 +41,7 @@ public class Enemy : Fighter
     {
         base.Draw();
 
+
         PlayCards();
     }
     
@@ -48,22 +49,22 @@ public class Enemy : Fighter
     {
         playedCards.Clear();
 
-        List<CardSO> hand = new(currentHand);
-
+        List<Card> hand = new(currentHand);
+        
         int i = 0;
         while (i < BattleManager.Instance.GetMaxPlayedCard() && hand.Count > 0)
         {
-            CardSO card = currentHand[Random.Range(0, currentHand.Count - 1)];
+            Card card = currentHand[Random.Range(0, currentHand.Count - 1)];
 
-            if (!playedCards.Contains(card))
-            {
-                playedCards.Add(card);
-                i++;
-            }
+            playedCards.Add(card);
+            hand.Remove(card);
+            i++;
         }
+
+        SetCurrentHand(hand);
     }
 
-    public List<CardSO> GetPlayedCards()
+    public List<Card> GetPlayedCards()
     {
         return playedCards;
     }

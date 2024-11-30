@@ -1059,7 +1059,7 @@ MonoBehaviour:
   - {fileID: 1026289451}
   - {fileID: 1351338072}
   - {fileID: 1787905626}
-  cardPrefab: {fileID: 3953175300962967225, guid: c4132365e0070b8479d3bbfb0571883e, type: 3}
+  cardPrefab: {fileID: 2038537327258385259, guid: c4132365e0070b8479d3bbfb0571883e, type: 3}
   hidenCard: {fileID: 21300000, guid: f0be56d5c443a8040acac466a1e31530, type: 3}
 --- !u!1 &1563384869
 GameObject:

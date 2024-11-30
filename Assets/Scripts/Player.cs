@@ -19,6 +19,8 @@ public class Player : Fighter
         else
         {
             Instance = this;
+
+            perception = maxPerception;
         }
     }
 
@@ -40,12 +42,12 @@ public class Player : Fighter
         hp += hpDelta;
     }
 
-    public int getCurrentPerception()
+    public int GetCurrentPerception()
     {
         return perception;
     }
 
-    public void addPerception()
+    public void AddPerception()
     {
         perception += 1;
         if (perception > maxPerception)
@@ -54,17 +56,18 @@ public class Player : Fighter
         }
     }
 
-    public void usePerception(int numberOfPerceptionUsed)
+    public void UsePerception(int numberOfPerceptionUsed)
     {
         perception -= numberOfPerceptionUsed;
+        perceptionUsedThisTurn = true;
     }
 
-    public bool getPerceptionStatus() 
+    public bool GetPerceptionStatus() 
     {
         return perceptionUsedThisTurn;
     }
 
-    public void setPerceptionStatus()
+    public void SetPerceptionStatus()
     {
         perceptionUsedThisTurn = !perceptionUsedThisTurn;
     }
