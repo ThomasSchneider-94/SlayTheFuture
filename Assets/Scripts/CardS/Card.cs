@@ -4,7 +4,8 @@ using System.Globalization;
 using UnityEngine;
 
 
-public abstract class Card : MonoBehaviour
+
+public class Card : MonoBehaviour
 {
 
 }
