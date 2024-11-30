@@ -98,4 +98,14 @@ public class SelectCard : MonoBehaviour
             buttons[index].transform.SetParent(playedCardPosition[placedButtons.Count - 1]);
         }
     }
+
+    public void PlayTurn()
+    {
+
+
+
+
+
+        BattleManager.Instance.PlayTurn();
+    }
 }

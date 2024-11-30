@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    public static BattleManager battleManagerInstance { get; private set; }
+    public static BattleManager Instance { get; private set; }
 
     private int currentFight;
     private int maxFightNumber;
 
     private void Awake()
     {
-        if (battleManagerInstance != null && battleManagerInstance != this)
+        if (Instance != null)
         {
             Destroy(this);
         }
         else
         {
-            battleManagerInstance = this;
+            Instance = this;
         }
     }
 
@@ -34,7 +34,7 @@ public class BattleManager : MonoBehaviour
         // Utiliser ou non la perception
     }
 
-    private void PlayTurn(List<CardSO> playerCards)
+    public void PlayTurn(List<CardSO> playerCards)
     {
         // Joueur les cartes de manières séquentielles
         // Vérifier si un des deux fighter

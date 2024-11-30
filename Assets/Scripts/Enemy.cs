@@ -22,7 +22,7 @@ public class Enemy : Fighter
     {
         if (hp + hpDelta <= 0)
         {
-            BattleManager.battleManagerInstance.winFight();
+            BattleManager.Instance.WinFight();
         }
     }
 }
