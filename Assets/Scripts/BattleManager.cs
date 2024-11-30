@@ -9,6 +9,8 @@ public class BattleManager : MonoBehaviour
     private int currentFight;
     private int maxFightNumber;
 
+    //[SerializeField] private BattlePreparation;
+
     private void Awake()
     {
         if (Instance != null)
@@ -23,15 +25,16 @@ public class BattleManager : MonoBehaviour
 
     private void InitiateBattle()
     {
-        // TODO : implémenter la logique
-        // Récupérer l'enemy avec son deck
-    }
+        // initialiser le deck de l'enemy
+        // Shuffle les decks du player et de l'enemy
 
-    private void TurnPreparation()
-    {
-        // Choisir les cartes du joueurs
-        // Choisir les cartes de l'enemy
-        // Utiliser ou non la perception
+        // TODO : initialiser le deck de l'enemy à partir du JSON
+
+        // Shuffle
+        Player.playerInstance.resetCurrentDeck();
+        Enemy.enemyInstance.resetCurrentDeck();
+
+        //BattlePreparation.
     }
 
     public void PlayTurn(List<CardSO> playerCards)
@@ -49,17 +52,9 @@ public class BattleManager : MonoBehaviour
 
         for (int i = 0; i <3; i++)
         {
-            if (enemyHand.Count > 0)
-            {
-                enemyCards.Add(enemyCards[0]);
-                enemyHand.RemoveAt(0);
-                numberOfEnemyCard++;
-            }
-            else
-            {
-                numberOfEnemyCard = i;
-                return;
-            }
+            enemyCards.Add(enemyCards[0]);
+            enemyHand.RemoveAt(0);
+            numberOfEnemyCard++;
         }
 
         while (playerCards.Count > 0 && numberOfEnemyCard > 0) 
@@ -75,14 +70,15 @@ public class BattleManager : MonoBehaviour
             currentEnemyCard.OnUseCard(Enemy.enemyInstance);
         }
 
-        // On vérifie il reste des cartes au joueur ou à l'enemy
-        if (playerCards.Count > 0)
+        // On vérifie si l'enemy a encore des cartes à jouer.
+        // Cas ou le joueur décide de ne pas joueur trois cartes
+        if (enemyCards.Count > 0)
         {
-            while(playerCards.Count > 0)
+            while(enemyCards.Count > 0)
             {
-                CardSO currentPlayerCard = playerCards[0];
-                playerCards.RemoveAt(0);
-                currentPlayerCard.OnUseCard(Player.playerInstance);
+                CardSO currentEnemyCards = enemyCards[0];
+                enemyCards.RemoveAt(0);
+                currentEnemyCards.OnUseCard(Enemy.enemyInstance);
             }
         }        
     }
