@@ -82,8 +82,8 @@ public class BattleManager : MonoBehaviour
         Player.playerInstance.consumePoisonStack();
 
         // Supprimer les shields à la fin du tours
-        Player.playerInstance.setShield(Player.playerInstance.getShield(), false);
-        Enemy.enemyInstance.setShield(Enemy.enemyInstance.getShield(), false);
+        Player.playerInstance.setShield(Player.playerInstance.getShield());
+        Enemy.enemyInstance.setShield(Enemy.enemyInstance.getShield());
 
         // Si le joueur n'a pas utilisé de perception se tour, lui augmenter
         if (!Player.playerInstance.getPerceptionStatus())

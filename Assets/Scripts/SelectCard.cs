@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class SelectCard : MonoBehaviour
 {
     [Header("Parameters")]
-    [SerializeField] private List<Image> playedCardPosition;
+    [SerializeField] private List<Transform> playedCardPosition;
     [SerializeField] private GridLayoutGroup handLayout;
     [SerializeField] private Fighter player;
 
@@ -16,7 +16,7 @@ public class SelectCard : MonoBehaviour
     [SerializeField] private MultiLayerButton cardPrefab;
 
     private readonly List<MultiLayerButton> buttons = new();
-    private List<int> placedButtons = new();
+    private readonly List<int> placedButtons = new();
 
     #region Init
     // Start is called before the first frame update
@@ -63,39 +63,41 @@ public class SelectCard : MonoBehaviour
         int i = 0;
         while (i < hand.Count)
         {
+            buttons[i].gameObject.SetActive(true);
 
 
-
+            // TODO
 
 
             i++;
         }
         while (i < player.GetMaxHandSize())
         {
-            //butto;
+            buttons[i].gameObject.SetActive(false);
+            i++;
         }
     }
 
-
-
-
-    public void ChangeButtonPosition(int buttonIndex)
+    public void ChangeButtonPosition(int index)
     {
-        /*
-        if (buttonsPlaced[buttonIndex])
+        if (placedButtons.Contains(index))
         {
+            placedButtons.Remove(index);
+            buttons[index].transform.SetParent(handLayout.transform);
+            Debug.Log("Return to hand");
 
-            Debug.Log(buttonsPlaced[buttonIndex]);
-            buttonsPlaced[buttonIndex] = false;
+            foreach(int buttonIndex in placedButtons)
+            {
+                buttons[buttonIndex].transform.SetParent(handLayout.transform);
+            }
         }
         else
         {
-            Debug.Log(buttonsPlaced[buttonIndex]);
+            if (placedButtons.Count >= playedCardPosition.Count) { return; }
 
+            placedButtons.Add(index);
 
-
-            buttonsPlaced[buttonIndex] = true;
-
-        }*/
+            buttons[index].transform.SetParent(playedCardPosition[placedButtons.Count - 1]);
+        }
     }
 }

@@ -46,16 +46,12 @@ public class Fighter : MonoBehaviour
         return hp;
     }
 
-    public void setShield(int shieldDelta, bool isPiercing)
+    public void setShield(int shieldDelta)
     {
         shield += shieldDelta;
-        if (shield < 0 && !isPiercing)
+        if (shield < 0)
         {
             setHP(shield);
-            shield = 0;
-        }
-        else if (shield < 0)
-        {
             shield = 0;
         }
     }
