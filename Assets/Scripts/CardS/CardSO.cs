@@ -30,7 +30,8 @@ public class CardSO : ScriptableObject
         {
             receiver = Enemy.enemyInstance;
         }
-        else {
+        else
+        {
             receiver = Player.playerInstance;
         }
 
@@ -60,45 +61,52 @@ public class CardSO : ScriptableObject
             inflictPoison(receiver);
         }
 
+        shieldBreak(receiver);
+
+
         receiver.setShield(damage[currentLevel]);
         thrower.setShield(shield[currentLevel]);
         thrower.setHP(heal[currentLevel]);
 
-
-
-        void shieldBreak(Fighter receiver)
-        {
-            receiver.setShield(receiver.getShield());
-        }
-
-
-        void inflictIce(Fighter receiver)
-        {
-            //Todo
-        }
-
-        void inflictFire(Fighter receiver)
-        {
-            //Todo
-        }
-
-        void inflictGroud(Fighter receiver)
-        {
-            //Todo
-        }
-
-        void inflictPlant(Fighter receiver)
-        {
-            //Todo
-        }
-
-        void inflictPoison(Fighter receiver)
-        {
-            receiver.addPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
-        }
-
-
     }
+
+    void shieldBreak(Fighter receiver)
+    {
+        receiver.setShield(receiver.getShield());
+    }
+
+    void inflictIce(Fighter receiver)
+    {
+        //Todo
+    }
+
+    void inflictFire(Fighter receiver)
+    {
+        //Todo
+    }
+
+    void inflictGroud(Fighter receiver)
+    {
+        //Todo
+    }
+
+    void inflictPlant(Fighter receiver)
+    {
+        //Todo
+    }
+
+    void inflictPoison(Fighter receiver)
+    {
+        receiver.addPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
+    }
+
+    public void upgardeCard()
+    {
+        if (currentLevel < 2)
+            currentLevel++;
+    }
+
+    
 }
 
 

@@ -25,4 +25,5 @@ public class Enemy : Fighter
             BattleManager.battleManagerInstance.winFight();
         }
     }
+
 }
