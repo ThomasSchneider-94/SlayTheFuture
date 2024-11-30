@@ -36,8 +36,7 @@ public class BattleManager : MonoBehaviour
 
     public void PlayTurn(List<CardSO> playerCards)
     {
-        // Joueur les cartes de manières séquentielles
-        // Vérifier si un des deux fighter
+        // Joueur les cartes de manières séquentielles -> OK
 
         foreach (CardSO card in playerCards)
         {
@@ -45,36 +44,47 @@ public class BattleManager : MonoBehaviour
         }
 
         List<CardSO> enemyHand = Enemy.enemyInstance.getCurrentHand();
+        List<CardSO> enemyCards = new List<CardSO>();
+        int numberOfEnemyCard = 0;
 
-        /*
-        while (playerHand.Count > 0 && enemyHand.Count > 0)
+        for (int i = 0; i <3; i++)
         {
-            //CardSO currentPlayerCard = playerHand.Pop();
-            //currentPlayerCard.OnUseCard(); // TDO : joueur la carte du joueur
-
-            //CardSO currentEnemyCard = enemyHand.Pop();
-            //currentEnemyCard.OnUseCard(); //TODO : joueur la carte de l'enemy
-        }
-
-        // Gérer le cas ou la taille de la main du joueur est plsu grande que celle de l'enemy
-        if (playerHand.Count > 0)
-        {
-            while (playerHand.Count > 0)
+            if (enemyHand.Count > 0)
             {
-                //CardSO currentPlayerCard = playerHand.Pop();
-                //currentPlayerCard.OnUseCard(); // TODO : joueur la carte du joueur
+                enemyCards.Add(enemyCards[0]);
+                enemyHand.RemoveAt(0);
+                numberOfEnemyCard++;
             }
-        }*/
-
-        // Gérer le cas où la taille de la main de l'enemy est plus grande que celle du joueur
-        if (enemyHand.Count > 0)
-        {
-            while (enemyHand.Count > 0)
+            else
             {
-                //CardSO currentenemyCard = enemyHand.Pop();
-                //currentenemyCard.OnUseCard(); // TODO : joueur la carte du joueur
+                numberOfEnemyCard = i;
+                return;
             }
         }
+
+        while (playerCards.Count > 0 && numberOfEnemyCard > 0) 
+        {
+            CardSO currentPlayerCard = playerCards[0];
+            playerCards.RemoveAt(0);
+
+            CardSO currentEnemyCard = enemyCards[0];
+            enemyCards.RemoveAt(0);
+            numberOfEnemyCard--;
+
+            currentPlayerCard.OnUseCard(Player.playerInstance);
+            currentEnemyCard.OnUseCard(Enemy.enemyInstance);
+        }
+
+        // On vérifie il reste des cartes au joueur ou à l'enemy
+        if (playerCards.Count > 0)
+        {
+            while(playerCards.Count > 0)
+            {
+                CardSO currentPlayerCard = playerCards[0];
+                playerCards.RemoveAt(0);
+                currentPlayerCard.OnUseCard(Player.playerInstance);
+            }
+        }        
     }
 
     private void PostTurnLogic()
@@ -83,7 +93,8 @@ public class BattleManager : MonoBehaviour
         // Réinitialiser les shields -> OK
         // Vérifier les cartes restantes dans le deck -> OK
 
-        // Infliger les dégats de poisons à la fin du tour
+        // Application des dégâts de poison
+        Enemy.enemyInstance.consumePoisonStack();
         Player.playerInstance.consumePoisonStack();
 
         // Supprimer les shields à la fin du tours
@@ -97,7 +108,7 @@ public class BattleManager : MonoBehaviour
         }
 
         // Vérifier si il reste des cartes dans le deck du joueur et dans le deck de l'enemy
-        if (Player.playerInstance.isCurrentDeckEmpty())
+        if (Player.playerInstance.isCurrentDeckEmpty() )
         {
             Player.playerInstance.resetCurrentDeck();
         }

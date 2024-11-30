@@ -84,7 +84,7 @@ public class Fighter : MonoBehaviour
 
     public bool isCurrentDeckEmpty()
     {
-        return (currentDeck.Count > 0);
+        return (currentDeck.Count <= 0);
     }
 
     public void addPoisonStack(int damage, int duration)
@@ -103,6 +103,11 @@ public class Fighter : MonoBehaviour
                 poison.RemoveAt(i);
             }
         }
+    }
+
+    public bool isCurrentHandEmpty()
+    {
+        return (currentHand.Count <= 0);
     }
 
     public int GetMaxHandSize()
