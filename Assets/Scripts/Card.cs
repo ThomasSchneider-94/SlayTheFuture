@@ -5,6 +5,7 @@ using UnityEngine;
 
 public abstract class Card : ScriptableObject
 {
+    /*
     public enum ElementType
     {
         BASIC,
@@ -15,7 +16,7 @@ public abstract class Card : ScriptableObject
         PLANT,
         NB_ELEMENT
     }
-
+    */
     [SerializeField] private string cardName;
     [SerializeField] private string description;
     [SerializeField] private ElementType element;

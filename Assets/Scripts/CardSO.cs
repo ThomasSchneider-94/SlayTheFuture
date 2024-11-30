@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
+
 [CreateAssetMenu()]
 public class CardSO : ScriptableObject
 {
-    public int damage;
-    public int shield;
-    public int heal;
+    [SerializeField] private int MAX_CARD_LEVEL = 2;
+
+    private int currentLevel;
+    public string cardName;
+    public int[] damage = new int[2];
+    public int[] shield= new int[2];
+    public int[] heal= new int[2];
     public ElementType elementType;
     public Sprite sprite;
     public string description;
 
-    
+
 
 
     void OnDrag()
@@ -21,53 +27,88 @@ public class CardSO : ScriptableObject
         //ToDo
     }
 
-    void OnUseCard()
+    public void OnUseCard(Fighter thrower)
     {
-        //ToDo
+        Fighter receiver;
+        if (thrower == Player.playerInstance)
+        {
+            receiver = Enemy.enemyInstance;
+        }
+        else {
+            receiver = Player.playerInstance;
+        }
+
+        receiver.setShield(damage[currentLevel]);
+        thrower.setShield(shield[currentLevel]);
+        thrower.setHP(heal[currentLevel]);
+
+
+        if (elementType == ElementType.ICE)
+        {
+            inflictIce(receiver);
+        }
+        else if (elementType == ElementType.FIRE)
+        {
+            inflictFire(receiver);
+
+        }
+        else if (elementType == ElementType.EARTH)
+        {
+            inflictGroud(receiver);
+        }
+        else if (elementType == ElementType.PLANT)
+        {
+
+            inflictPlant(receiver);
+        }
+        else if (elementType == ElementType.POISON)
+        {
+            inflictPoison(receiver);
+        }
+
+
+
+        void shieldBreak(Fighter receiver)
+        {
+            //Todo
+        }
+
+
+        void inflictIce(Fighter receiver)
+        {
+            //Todo
+        }
+
+        void inflictFire(Fighter receiver)
+        {
+            //Todo
+        }
+
+        void inflictGroud(Fighter receiver)
+        {
+            //Todo
+        }
+
+        void inflictPlant(Fighter receiver)
+        {
+            //Todo
+        }
+
+        void inflictPoison(Fighter receiver)
+        {
+            //Todo
+        }
+
     }
-
-
-
-    void shieldBreak()
-    {
-        //Todo
-    }
-
-
-    void inflictIce()
-    {
-        //Todo
-    }
-
-    void inflictFire()
-    {
-        //Todo
-    }
-
-    void inflictGroud()
-    {
-        //Todo
-    }
-
-    void inflictPlant()
-    {
-        //Todo
-    }
-
-    void inflictPoison()
-    {
-        //Todo
-    }
-
 }
 
 
 public enum ElementType
 {
-    Physical,
-    Ice,
-    Fire,
-    Ground,
-    Plant,
-    Poison
+    PHYSICAL,
+    ICE,
+    FIRE,
+    EARTH,
+    PLANT,
+    POISON,
 }
