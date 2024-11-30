@@ -37,7 +37,38 @@ public class Fighter : MonoBehaviour
         {
             currentDeck.Add(card);
         }
+
+        ShuffleList(currentDeck);        
     }
+
+    public void ShuffleList(List<CardSO> list){
+        
+    int n = list.Count;  
+        while (n > 1) {  
+            n--;  
+            int k = Random.Range(0, n);
+            CardSO tmp = list[k];  
+            list[k] = list[n];  
+            list[n] = tmp;  
+        }
+    }
+
+
+    public void pioche()
+    {
+        if ((currentDeck.Count == 0) && (currentHand.Count == 0)){
+            resetCurrentDeck();
+        }
+
+        while ((currentDeck.Count > 0) && (currentHand.Count < 5)){
+            CardSO card = currentDeck[0];
+            currentDeck.RemoveAt(0);
+            currentHand.Add(card);
+        }
+
+    }
+
+
 
     public virtual void setHP(int hpDelta){}
 
@@ -74,7 +105,7 @@ public class Fighter : MonoBehaviour
 
     public void addCardToHand(CardSO cardToAdd)
     {
-        // TODO : à implémenter
+        // TODO : ï¿½ implï¿½menter
     }
 
     public List<CardSO> getCurrentHand()
