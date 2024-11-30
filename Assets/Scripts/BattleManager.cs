@@ -6,10 +6,6 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager battleManagerInstance { get; private set; }
 
-    private List<Card> playerDeck;
-    private List<Card> enemyDeck;
-
-
     private void Awake()
     {
         if (battleManagerInstance != null && battleManagerInstance != this)
@@ -69,12 +65,17 @@ public class BattleManager : MonoBehaviour
             //card.OnUseCard(0); // TDO : joueur la carte du joueur
 
             Card currentEnemyCard = enemyHand.Pop();
-            //currentEnemyCard.OnUseCard(1); //TODO : joueur la carte
+            //currentEnemyCard.OnUseCard(1); //TODO : joueur la carte de l'enemy
         }
 
-        if (playerHand.Count > 0)
+        // Gérer le cas ou la taille de la main du joueur est plsu grande que celle de l'enemy
+        if (playerHand.Count > 0 && enemyHand.Count == 0)
         {
-            
+            while(playerHand.Count > 0)
+            {
+                Card currentPlayerCard = playerHand.Pop();
+                //card.OnUseCard(0); // TODO : joueur la carte du joueur
+            }
         }
     }
 
