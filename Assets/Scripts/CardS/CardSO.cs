@@ -1,5 +1,7 @@
+using Microsoft.Unity.VisualStudio.Editor;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -10,7 +12,7 @@ public class CardSO : ScriptableObject
 {
     [SerializeField] private int MAX_CARD_LEVEL = 3;
 
-    private int currentLevel;
+    public int currentLevel;
     public string cardName;
     public int[] damage = new int[3];
     public int[] shield= new int[3];
@@ -18,7 +20,7 @@ public class CardSO : ScriptableObject
     public int[] poisonDamage = new int[3];
     public int[] poisonDuration = new int[3];
     public ElementType elementType;
-    public Sprite sprite;
+    public Sprite[] sprite = new Sprite[3];
     public string description;
 
 
@@ -61,18 +63,15 @@ public class CardSO : ScriptableObject
             inflictPoison(receiver);
         }
 
-
-        shieldBreak(receiver);
-
-        receiver.SetShield(damage[currentLevel]);
         thrower.SetShield(shield[currentLevel]);
-        thrower.SetHP(heal[currentLevel]);
+        receiver.SetShield(-damage[currentLevel]);
+        receiver.SetHP(heal[currentLevel]);
 
     }
 
     void shieldBreak(Fighter receiver)
     {
-        receiver.setShield(receiver.getShield());
+        receiver.SetShield(receiver.GetShield());
     }
 
     void inflictIce(Fighter receiver)
@@ -82,7 +81,7 @@ public class CardSO : ScriptableObject
 
     void inflictFire(Fighter receiver)
     {
-        //Todo
+        shieldBreak(receiver);
     }
 
     void inflictGroud(Fighter receiver)
@@ -97,13 +96,14 @@ public class CardSO : ScriptableObject
 
     void inflictPoison(Fighter receiver)
     {
-        receiver.addPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
+        receiver.AddPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
     }
 
     public void upgardeCard()
     {
         if (currentLevel < 2)
             currentLevel++;
+        
     }
 
     

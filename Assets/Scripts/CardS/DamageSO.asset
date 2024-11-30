@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: DamageSO
   m_EditorClassIdentifier: 
   MAX_CARD_LEVEL: 3
-  cardName: 
+  currentLevel: 0
+  cardName: DamageCard
   damage: 050000000700000009000000
   shield: 000000000000000000000000
   heal: 000000000000000000000000
   poisonDamage: 000000000000000000000000
   poisonDuration: 000000000000000000000000
   elementType: 0
-  sprite: {fileID: 0}
+  sprite:
+  - {fileID: 21300000, guid: c98efc898d52e8e4382c4f79d4b079a1, type: 3}
+  - {fileID: 21300000, guid: 22d159e4e692e0e43957316ee42b9fc1, type: 3}
+  - {fileID: 21300000, guid: a0243e5847e23e34d849eedf86d4e73b, type: 3}
   description: 
