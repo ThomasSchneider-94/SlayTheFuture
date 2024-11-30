@@ -1,9 +1,13 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Fighter : MonoBehaviour
 {
+    [SerializeField] protected int maxHandSize;
+    [SerializeField] protected int maxDeckSize;
+
     protected int hp;
     private int maxHP;
     private int shield;
@@ -11,7 +15,7 @@ public class Fighter : MonoBehaviour
     private List<(int, int)> poison;
 
 
-    private CardSO[] deck = new CardSO[15];
+    private List<CardSO> deck;
     private int currentCardIndex = 0;
 
     private Stack<CardSO> currentHand = new Stack<CardSO>();
@@ -19,7 +23,9 @@ public class Fighter : MonoBehaviour
 
     private void Start()
     {
-        // TODO : initialiser le deck du joueur avec une liste de cartes 
+        // TODO : initialiser le deck du joueur avec une liste de cartes
+
+        deck = new(15);
     }
 
     public void resetCurrentDeck()
@@ -65,7 +71,7 @@ public class Fighter : MonoBehaviour
         currentCardIndex++;
     }
 
-     public void disacrdCard(CardSO card)
+     public void discardCard(CardSO card)
     {
         currentDeck.Remove(card);
     }
@@ -101,5 +107,10 @@ public class Fighter : MonoBehaviour
                 poison.RemoveAt(i);
             }
         }
+    }
+
+    public int GetMaxHandSize()
+    {
+        return maxHandSize;
     }
 }
