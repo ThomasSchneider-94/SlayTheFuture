@@ -18,7 +18,6 @@ public class Fighter : MonoBehaviour
     private List<CardSO> deck;
     private int currentCardIndex = 0;
 
-    private List<CardSO> currentPlayedCard = new List<CardSO>();
     private List<CardSO> currentHand = new List<CardSO>();
     private List<CardSO> currentDeck = new List<CardSO>();
 

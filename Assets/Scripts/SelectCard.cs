@@ -44,8 +44,6 @@ public class SelectCard : MonoBehaviour
         button.transform.SetParent(handLayout.transform);
         button.onClick.AddListener(delegate { ChangeButtonPosition(index); });
 
-        Debug.Log(index);
-
         buttons.Add(button);
     }
     #endregion Init
