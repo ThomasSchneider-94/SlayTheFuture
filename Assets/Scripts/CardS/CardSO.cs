@@ -68,6 +68,8 @@ public class CardSO : ScriptableObject
 
 
 
+
+
         void shieldBreak(Fighter receiver)
         {
             //Todo
