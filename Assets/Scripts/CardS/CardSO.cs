@@ -26,13 +26,13 @@ public class CardSO : ScriptableObject
     public void OnUseCard(Fighter thrower)
     {
         Fighter receiver;
-        if (thrower == Player.playerInstance)
+        if (thrower == Player.Instance)
         {
-            receiver = Enemy.enemyInstance;
+            receiver = Enemy.Instance;
         }
-        else
-        {
-            receiver = Player.playerInstance;
+
+        else {
+            receiver = Player.Instance;
         }
 
 
@@ -61,54 +61,13 @@ public class CardSO : ScriptableObject
             inflictPoison(receiver);
         }
 
-<<<<<<< HEAD
+
         shieldBreak(receiver);
 
-
-        receiver.setShield(damage[currentLevel]);
-        thrower.setShield(shield[currentLevel]);
-        thrower.setHP(heal[currentLevel]);
-
-=======
         receiver.SetShield(damage[currentLevel]);
         thrower.SetShield(shield[currentLevel]);
         thrower.SetHP(heal[currentLevel]);
 
-
-
-        void shieldBreak(Fighter receiver)
-        {
-            receiver.SetShield(receiver.GetShield());
-        }
-
-
-        void inflictIce(Fighter receiver)
-        {
-            //Todo
-        }
-
-        void inflictFire(Fighter receiver)
-        {
-            //Todo
-        }
-
-        void inflictGroud(Fighter receiver)
-        {
-            //Todo
-        }
-
-        void inflictPlant(Fighter receiver)
-        {
-            //Todo
-        }
-
-        void inflictPoison(Fighter receiver)
-        {
-            receiver.AddPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
-        }
-
-
->>>>>>> 9bf47a567296b5cf2a1a44825311c2332c04a531
     }
 
     void shieldBreak(Fighter receiver)

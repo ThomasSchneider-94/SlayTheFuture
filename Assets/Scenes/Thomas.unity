@@ -1391,6 +1391,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8847749257037896040, guid: a087c5922fdf7ba49b7c57d895c49622, type: 3}
+      propertyPath: dmgCard
+      value: 
+      objectReference: {fileID: 11400000, guid: f7e31498ed824b44d9b7e5b7c5698841, type: 2}
+    - target: {fileID: 8847749257037896040, guid: a087c5922fdf7ba49b7c57d895c49622, type: 3}
+      propertyPath: HealCard
+      value: 
+      objectReference: {fileID: 11400000, guid: 3604c5de12bec13488e60c4549f9edea, type: 2}
+    - target: {fileID: 8847749257037896040, guid: a087c5922fdf7ba49b7c57d895c49622, type: 3}
+      propertyPath: PierceCard
+      value: 
+      objectReference: {fileID: 11400000, guid: d22bb11fd7c085f4a9b8c9665f6d4049, type: 2}
+    - target: {fileID: 8847749257037896040, guid: a087c5922fdf7ba49b7c57d895c49622, type: 3}
+      propertyPath: PoisonCard
+      value: 
+      objectReference: {fileID: 11400000, guid: 34f3a73c611effd4cbba21b3585b2595, type: 2}
+    - target: {fileID: 8847749257037896040, guid: a087c5922fdf7ba49b7c57d895c49622, type: 3}
+      propertyPath: battlePrep
+      value: 
+      objectReference: {fileID: 1528886184}
+    - target: {fileID: 8847749257037896040, guid: a087c5922fdf7ba49b7c57d895c49622, type: 3}
+      propertyPath: shieldCard
+      value: 
+      objectReference: {fileID: 11400000, guid: 68ec093eb40b8a044b8b86e58830c6f1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -14,4 +14,9 @@ public class Card : MonoBehaviour
         this.cardSO = cardSO;
     }
 
+    public void ApplyCardSO()
+    {
+
+    }
+
 }

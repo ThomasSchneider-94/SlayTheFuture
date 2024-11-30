@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class Enemy : Fighter
 {
-    public static Enemy enemyInstance { get; private set; }
+    public static Enemy Instance { get; private set; }
 
     private void Awake()
     {
-        if (enemyInstance != null && enemyInstance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this);
         }
         else
         {
-            enemyInstance = this;
+            Instance = this;
         }
     }
 

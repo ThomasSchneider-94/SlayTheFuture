@@ -1,9 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Rendering;
+
+
+
+[Serializable]
+public class JsonDecks
+{
+    public JsonDeck[] Decks;
+}
+
+[Serializable]
+public class JsonDeck
+{
+    public string name;
+    public string[] content;
+}
 
 public class BattleManager : MonoBehaviour
 {
@@ -22,7 +39,7 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField] private BattlePreparation battlePrep;
 
-    Dictionary<string, List<Card>> allDeckCards = new Dictionary<string, List<Card>>();
+    private readonly Dictionary<string, List<CardSO>> allDeckCards = new();
 
     private void Awake()
     {
@@ -34,84 +51,66 @@ public class BattleManager : MonoBehaviour
         {
             Instance = this;
         }   
-
     }
 
-    private List<Card> ParseJson()
+    private void Start()
     {
-        Dictionary<string, string[]> allDeckData = JsonUtility.FromJson<Dictionary<string,string[]>>(Resources.Load("DeckBuilds").ToString());
+        InitializeDecks();
 
+        Player.Instance.InitDeck(allDeckCards["BalancedDeck"]);
 
-        List<Card> playerDeck = new List<Card>();
-        foreach (string key in allDeckData.Keys)
+        InitiateBattle();
+    }
+
+    private void InitializeDecks()
+    {
+
+        JsonDecks allDeckData = JsonUtility.FromJson<JsonDecks>(Resources.Load<TextAsset>("DeckBuilds").text);
+
+        foreach (JsonDeck deck in allDeckData.Decks)
         {
-            foreach (string cardname in allDeckData[key])
+            allDeckCards[deck.name] = new();
+            foreach (string card in deck.content)
             {
-                Card card = new Card();
-                switch (cardname)
+                // Switch for a single variable
+                CardSO cardSO = card switch
                 {
-                    case "DamageCard":
-                        card.SetCardSO(dmgCard);
-                        break;
-                    case "PierceCard":
-                        card.SetCardSO(PierceCard);
-                        break;
-                    case "ShieldCard":
-                        card.SetCardSO(shieldCard);
-                        break;
-                    case "HealCard":
-                        card.SetCardSO(HealCard);
-                        break;
-                    case "PoisonCard":
-                        card.SetCardSO(PoisonCard);
-                        break;
-
-
-                }
-
-                allDeckCards[key].Add(card);
+                    "DamageCard" => dmgCard,
+                    "PierceCard" => PierceCard,
+                    "ShieldCard" => shieldCard,
+                    "HealCard" => HealCard,
+                    "PoisonCard" => PoisonCard,
+                    _ => dmgCard,
+                };
+                allDeckCards[deck.name].Add(cardSO);
             }
         }
-
-        playerDeck = allDeckCards["BalancedDeck"];
-        return playerDeck;
-
     }
-
     
-
-
     private void InitiateBattle()
     {
         // initialiser le deck de l'enemy
         // Shuffle les decks du player et de l'enemy
-        if (Player.playerInstance.GetCurrentDeck() == null)
-        {
-            Player.playerInstance.SetCurrentDeck(ParseJson());
-        }
-
-        Enemy.enemyInstance.SetCurrentDeck(allDeckCards["AttackerDeck"]);
-
-        // TODO : initialiser le deck de l'enemy à partir du JSON
+        Enemy.Instance.InitDeck(allDeckCards["AttackerDeck"]);
 
         // Shuffle
-        Player.playerInstance.ResetCurrentDeck();
-        Enemy.enemyInstance.ResetCurrentDeck();
+        Player.Instance.ResetCurrentDeck();
+        Enemy.Instance.ResetCurrentDeck();
 
         battlePrep.ResetBattle();
     }
 
-    public void PlayTurn(List<Card> playerCards)
+    public void PlayTurn(List<CardSO> playerCards)
     {
         // Joueur les cartes de manières séquentielles -> OK
 
-        foreach (Card card in playerCards)
+        foreach (CardSO card in playerCards)
         {
-            Debug.Log(card.cardSO.cardName);
+            Debug.Log(card.cardName);
         }
 
-        List<Card> enemyHand = Enemy.enemyInstance.GetCurrentHand();
-        List<Card> enemyCards = new List<Card>();
+        List<CardSO> enemyHand = Enemy.Instance.GetCurrentHand();
+        List<CardSO> enemyCards = new();
         int numberOfEnemyCard = 0;
 
         for (int i = 0; i < maxPlayedCard; i++)
@@ -123,15 +122,15 @@ public class BattleManager : MonoBehaviour
 
         while (playerCards.Count > 0 && numberOfEnemyCard > 0) 
         {
-            Card currentPlayerCard = playerCards[0];
+            CardSO currentPlayerCard = playerCards[0];
             playerCards.RemoveAt(0);
 
-            Card currentEnemyCard = enemyCards[0];
+            CardSO currentEnemyCard = enemyCards[0];
             enemyCards.RemoveAt(0);
             numberOfEnemyCard--;
 
-            currentPlayerCard.cardSO.OnUseCard(Player.playerInstance);
-            currentEnemyCard.cardSO.OnUseCard(Enemy.enemyInstance);
+            currentPlayerCard.OnUseCard(Player.Instance);
+            currentEnemyCard.OnUseCard(Enemy.Instance);
         }
 
         // On vérifie si l'enemy a encore des cartes à jouer.
@@ -140,9 +139,9 @@ public class BattleManager : MonoBehaviour
         {
             while(enemyCards.Count > 0)
             {
-                Card currentEnemyCards = enemyCards[0];
+                CardSO currentEnemyCards = enemyCards[0];
                 enemyCards.RemoveAt(0);
-                currentEnemyCards.cardSO.OnUseCard(Enemy.enemyInstance);
+                currentEnemyCards.OnUseCard(Enemy.Instance);
             }
         }
 
@@ -157,28 +156,28 @@ public class BattleManager : MonoBehaviour
         // Vérifier les cartes restantes dans le deck -> OK
 
         // Application des dégâts de poison
-        Enemy.enemyInstance.ConsumePoisonStack();
-        Player.playerInstance.ConsumePoisonStack();
+        Enemy.Instance.ConsumePoisonStack();
+        Player.Instance.ConsumePoisonStack();
 
         // Supprimer les shields à la fin du tours
-        Player.playerInstance.SetShield(Player.playerInstance.GetShield());
-        Enemy.enemyInstance.SetShield(Enemy.enemyInstance.GetShield());
+        Player.Instance.SetShield(Player.Instance.GetShield());
+        Enemy.Instance.SetShield(Enemy.Instance.GetShield());
 
         // Si le joueur n'a pas utilisé de perception se tour, lui augmenter
-        if (!Player.playerInstance.getPerceptionStatus())
+        if (!Player.Instance.getPerceptionStatus())
         {
-            Player.playerInstance.addPerception();
+            Player.Instance.addPerception();
         }
 
         // Vérifier si il reste des cartes dans le deck du joueur et dans le deck de l'enemy
-        if (Player.playerInstance.IsCurrentDeckEmpty() )
+        if (Player.Instance.IsCurrentDeckEmpty() )
         {
-            Player.playerInstance.ResetCurrentDeck();
+            Player.Instance.ResetCurrentDeck();
         }
 
-        if (Enemy.enemyInstance.IsCurrentDeckEmpty())
+        if (Enemy.Instance.IsCurrentDeckEmpty())
         {
-            Enemy.enemyInstance.ResetCurrentDeck();
+            Enemy.Instance.ResetCurrentDeck();
         }
     }
 

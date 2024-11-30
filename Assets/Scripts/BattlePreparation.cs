@@ -29,7 +29,6 @@ public class BattlePreparation : MonoBehaviour
     // Player Cards
     private readonly List<MultiLayerButton> playerCardButtons = new();
     private readonly List<int> placedButtons = new();
-    private List<Card> playerHand;
 
     // Enemy cards
     private readonly List<MultiLayerButton> enemyCardButtons = new();
@@ -97,16 +96,9 @@ public class BattlePreparation : MonoBehaviour
         }
         placedButtons.Clear();
 
-
-        //playerHand = player.GetCurrentHand();
-        playerHand = new();
-        for (int k = 0; k < player.GetMaxHandSize(); k++)
-        {
-            playerHand.Add(new Card());
-        }
-
         // Player Cards
         int i = 0;
+        List<CardSO> playerHand = player.GetCurrentHand();
         while (i < playerHand.Count)
         {
             playerCardButtons[i].gameObject.SetActive(true);
@@ -125,24 +117,20 @@ public class BattlePreparation : MonoBehaviour
 
         // Enemy Cards
         int j = 0;
-        //List<CardSO> enemyCards = enemy.get;
-
-
+        List<CardSO> enemyCards = enemy.GetCurrentHand();
 
         while (j < playerHand.Count)
         {
-            playerCardButtons[i].gameObject.SetActive(true);
-
+            playerCardButtons[j].gameObject.SetActive(true);
 
             // TODO
 
-
-            i++;
+            j++;
         }
-        while (i < player.GetMaxHandSize())
+        while (j < player.GetMaxHandSize())
         {
-            playerCardButtons[i].gameObject.SetActive(false);
-            i++;
+            playerCardButtons[j].gameObject.SetActive(false);
+            j++;
         }
     }
 
@@ -190,15 +178,10 @@ public class BattlePreparation : MonoBehaviour
         enemyCardRevealed[index] = true;
     }
 
-
-
-
-
-
-
     public void PlayTurn()
     {
-        List<Card> cards = new();
+        List<CardSO> cards = new();
+        List<CardSO> playerHand = player.GetCurrentHand();
 
         foreach (int cardIndex in placedButtons)
         {

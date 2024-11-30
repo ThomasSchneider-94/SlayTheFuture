@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : Fighter
 {
-    public static Player playerInstance { get; private set; }
+    public static Player Instance { get; private set; }
 
     private int perception;
     private readonly int maxPerception = 5;
@@ -12,13 +12,13 @@ public class Player : Fighter
 
     private void Awake()
     {
-        if (playerInstance != null && playerInstance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this);
         }
         else
         {
-            playerInstance = this;
+            Instance = this;
         }
     }
 
