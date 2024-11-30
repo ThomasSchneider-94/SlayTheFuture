@@ -5,8 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-
 public class Card: MonoBehaviour
 {
     public CardSO cardSO;
@@ -33,7 +31,4 @@ public class Card: MonoBehaviour
         sprite = cardSO.sprite;
         description = cardSO.description;
     }
-
-
-
 }
