@@ -17,4 +17,12 @@ public class Enemy : Fighter
             enemyInstance = this;
         }
     }
+
+    public override void setHP(int hpDelta)
+    {
+        if (hp + hpDelta <= 0)
+        {
+            BattleManager.battleManagerInstance.winFight();
+        }
+    }
 }
