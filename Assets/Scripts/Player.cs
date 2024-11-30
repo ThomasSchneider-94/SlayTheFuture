@@ -26,8 +26,17 @@ public class Player : Fighter
     {
         if (hp + hpDelta <= 0)
         {
-            //BattleManager.Instance.loseFight();
+            BattleManager.Instance.GameOver();
+            return;
         }
+
+        if (hp + hpDelta > maxHP)
+        {
+            hp = maxHP;
+            return;
+        }
+
+        hp += hpDelta;
     }
 
     public int getCurrentPerception()

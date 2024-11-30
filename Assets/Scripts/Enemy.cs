@@ -22,7 +22,16 @@ public class Enemy : Fighter
     {
         if (hp + hpDelta <= 0)
         {
-            BattleManager.Instance.WinFight();
+            BattleManager.Instance.NextBattle();
+            return;
         }
+
+        if (hp + hpDelta > maxHP)
+        {
+            hp = maxHP;
+            return;
+        }
+
+        hp += hpDelta;
     }
 }

@@ -9,10 +9,10 @@ public class Fighter : MonoBehaviour
     [SerializeField] protected int maxDeckSize;
 
     protected int hp;
-    private int maxHP;
+    protected int maxHP;
     private int shield;
 
-    private List<(int, int)> poison;
+    private List<(int, int)> poison = new();
 
 
     private List<CardSO> deck;
@@ -54,7 +54,7 @@ public class Fighter : MonoBehaviour
     }
 
 
-    public void pioche()
+    public void draw()
     {
         if ((currentDeck.Count == 0) && (currentHand.Count == 0)){
             resetCurrentDeck();
@@ -127,8 +127,6 @@ public class Fighter : MonoBehaviour
     {
         for (int i = 0; i < poison.Count; i++)
         {
-            // TODO : deal damage according to the posion value
-
             if (poison[i].Item1 == 1)
             {
                 poison.RemoveAt(i);
