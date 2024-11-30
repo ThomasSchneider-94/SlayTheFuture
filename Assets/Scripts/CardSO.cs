@@ -21,7 +21,19 @@ public class CardSO : ScriptableObject
     public Sprite sprite;
     public string description;
 
-
+    public void Init(CardSO card)
+    {
+        this.currentLevel = card.currentLevel;
+        this.cardName = card.cardName;
+        this.damage = card.damage;
+        this.shield = card.shield;
+        this.heal = card.heal;
+        this.poisonDamage = card.poisonDamage;
+        this.poisonDuration = card.poisonDuration;
+        this.elementType = card.elementType;
+        this.sprite = card.sprite;
+        this.description = card.description;
+    }
 
     public void OnUseCard(Fighter thrower)
     {
@@ -34,70 +46,65 @@ public class CardSO : ScriptableObject
             receiver = Player.Instance;
         }
 
-
-
-
+        /*
         if (elementType == ElementType.ICE)
         {
-            inflictIce(receiver);
+            InflictIce(receiver);
         }
         else if (elementType == ElementType.FIRE)
         {
-            inflictFire(receiver);
+            InflictFire(receiver);
 
         }
         else if (elementType == ElementType.EARTH)
         {
-            inflictGroud(receiver);
+            InflictGroud(receiver);
         }
         else if (elementType == ElementType.PLANT)
         {
 
-            inflictPlant(receiver);
+            InflictPlant(receiver);
         }
         else if (elementType == ElementType.POISON)
         {
-            inflictPoison(receiver);
-        }
+            InflictPoison(receiver);
+        }*/
+
 
         receiver.SetShield(damage[currentLevel]);
         thrower.SetShield(shield[currentLevel]);
         thrower.SetHP(heal[currentLevel]);
+    }
+
+    void ShieldBreak(Fighter receiver)
+    {
+        receiver.SetShield(receiver.GetShield());
+    }
 
 
+    void InflictIce(Fighter receiver)
+    {
+        //Todo
+    }
 
-        void shieldBreak(Fighter receiver)
-        {
-            receiver.SetShield(receiver.GetShield());
-        }
+    void InflictFire(Fighter receiver)
+    {
+        //Todo
+    }
 
+    void InflictGroud(Fighter receiver)
+    {
+        //Todo
+    }
 
-        void inflictIce(Fighter receiver)
-        {
-            //Todo
-        }
+    void InflictPlant(Fighter receiver)
+    {
+        //Todo
+    }
 
-        void inflictFire(Fighter receiver)
-        {
-            //Todo
-        }
-
-        void inflictGroud(Fighter receiver)
-        {
-            //Todo
-        }
-
-        void inflictPlant(Fighter receiver)
-        {
-            //Todo
-        }
-
-        void inflictPoison(Fighter receiver)
-        {
-            receiver.AddPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
-        }
-
-
+    void InflictPoison(Fighter receiver)
+    {
+        receiver.AddPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
     }
 }
 

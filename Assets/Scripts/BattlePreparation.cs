@@ -15,9 +15,11 @@ public class BattlePreparation : MonoBehaviour
 
     [Header("General")]
     [SerializeField] private GridLayoutGroup handLayout;
+
     [Header("Player")]
     [SerializeField] private Player player;
     [SerializeField] private List<Transform> playerCardPosition;
+
     [Header("Enemy")]
     [SerializeField] private Enemy enemy;
     [SerializeField] private List<Transform> enemyCardPosition;
@@ -36,7 +38,7 @@ public class BattlePreparation : MonoBehaviour
 
     #region Init
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (BattleManager.Instance.GetMaxPlayedCard() != playerCardPosition.Count || BattleManager.Instance.GetMaxPlayedCard() != enemyCardPosition.Count)
         {
@@ -44,8 +46,6 @@ public class BattlePreparation : MonoBehaviour
         }
 
         CreateCardButtons();
-
-        ResetBattle();
 
         handLayout.constraintCount = player.GetMaxHandSize();
     }
@@ -80,6 +80,8 @@ public class BattlePreparation : MonoBehaviour
         MultiLayerButton button = GameObject.Instantiate<MultiLayerButton>(cardPrefab);
 
         button.transform.SetParent(enemyCardPosition[index]);
+        button.transform.localScale = Vector2.one;
+        button.transform.localPosition = Vector2.zero;
 
         button.onClick.AddListener(delegate { RevealCard(index); });
 
@@ -99,6 +101,7 @@ public class BattlePreparation : MonoBehaviour
         // Player Cards
         int i = 0;
         List<CardSO> playerHand = player.GetCurrentHand();
+
         while (i < playerHand.Count)
         {
             playerCardButtons[i].gameObject.SetActive(true);
@@ -140,7 +143,6 @@ public class BattlePreparation : MonoBehaviour
         {
             placedButtons.Remove(index);
             playerCardButtons[index].transform.SetParent(handLayout.transform);
-            Debug.Log("Return to hand");
 
             for (int i = 0; i < placedButtons.Count; i++)
             {
@@ -160,8 +162,6 @@ public class BattlePreparation : MonoBehaviour
         {
             if (placedButtons.Count >= playerCardPosition.Count) { return; }
 
-            Debug.Log("Placed button " + index);
-
 
             placedButtons.Add(index);
 
@@ -180,14 +180,24 @@ public class BattlePreparation : MonoBehaviour
 
     public void PlayTurn()
     {
-        List<CardSO> cards = new();
+        List<CardSO> cardsToPlay = new();
+        List<CardSO> cardsInHand = new();
         List<CardSO> playerHand = player.GetCurrentHand();
 
-        foreach (int cardIndex in placedButtons)
+        for (int i = 0; i < playerHand.Count; i++)
         {
-            cards.Add(playerHand[cardIndex]);
+            if (placedButtons.Contains(i))
+            {
+                cardsToPlay.Add(playerHand[i]);
+            }
+            else
+            {
+                cardsInHand.Add(playerHand[i]);
+            }
         }
 
-        BattleManager.Instance.PlayTurn(cards);
+        player.SetCurrentHand(cardsInHand);
+
+        BattleManager.Instance.PlayTurn(cardsToPlay);
     }
 }

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea1479e97ee5ffb429e13a6cede745d6, type: 3}
-  m_Name: PoisonSO
+  m_Name: PierceSO
   m_EditorClassIdentifier: 
   MAX_CARD_LEVEL: 3
-  cardName: 
-  damage: 000000000000000000000000
+  cardName: Pierce
+  damage: 020000000300000004000000
   shield: 000000000000000000000000
   heal: 000000000000000000000000
-  poisonDamage: 020000000300000003000000
-  poisonDuration: 020000000200000003000000
-  elementType: 5
+  poisonDamage: 000000000000000000000000
+  poisonDuration: 000000000000000000000000
+  elementType: 0
   sprite: {fileID: 0}
   description: 

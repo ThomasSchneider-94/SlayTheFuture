@@ -5,27 +5,27 @@ using UnityEngine;
 
 public abstract class Fighter : MonoBehaviour
 {
+    [Header("Hand Size")]
     [SerializeField] protected int maxHandSize;
     [SerializeField] protected int maxDeckSize;
 
+    [Header("Hand Size")]
+    [SerializeField] protected int maxHP;
     protected int hp;
-    protected int maxHP;
     private int shield;
 
     private List<(int, int)> poison = new();
 
-
     private List<CardSO> deck;
-    private int currentCardIndex = 0;
 
-    private List<CardSO> currentHand = new();
+    protected List<CardSO> currentHand = new();
     private List<CardSO> currentDeck = new();
 
     private void Start()
     {
         // TODO : initialiser le deck du joueur avec une liste de cartes
 
-        deck = new(15);
+        hp = maxHP;
     }
 
     public void InitDeck(List<CardSO> baseDeck)
@@ -41,11 +41,17 @@ public abstract class Fighter : MonoBehaviour
     #region Current Deck
     public void ResetCurrentDeck()
     {
-        currentDeck = new();
+        Debug.Log("Reset");
+        currentDeck.Clear();
+
+        Debug.Log(deck.Count);
 
         foreach (var card in deck)
         {
-            currentDeck.Add(card);
+            CardSO cardSO = ScriptableObject.CreateInstance<CardSO>();
+            cardSO.Init(card);
+
+            currentDeck.Add(cardSO);
         }
 
         ShuffleList(currentDeck);
@@ -65,18 +71,25 @@ public abstract class Fighter : MonoBehaviour
         }
     }
 
-    public void Draw()
+    public virtual void Draw()
     {
+        Debug.Log(currentDeck.Count);
+        Debug.Log(currentHand.Count);
+
+
         if (currentDeck.Count == 0 && currentHand.Count == 0)
         {
             ResetCurrentDeck();
         }
 
-        while ((currentDeck.Count > 0) && (currentHand.Count < 5))
+        while (currentDeck.Count > 0 && currentHand.Count < maxHandSize)
         {
             CardSO card = currentDeck[0];
             currentDeck.RemoveAt(0);
             currentHand.Add(card);
+
+            Debug.Log(currentDeck.Count);
+
         }
     }
 
@@ -119,7 +132,6 @@ public abstract class Fighter : MonoBehaviour
             }
         }
     }
-
 
     #region Setter
     public abstract void SetHP(int hpDelta);

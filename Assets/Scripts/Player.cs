@@ -26,6 +26,7 @@ public class Player : Fighter
     {
         if (hp + hpDelta <= 0)
         {
+            Debug.Log("GameOver");
             BattleManager.Instance.GameOver();
             return;
         }

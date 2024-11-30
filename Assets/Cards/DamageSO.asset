@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea1479e97ee5ffb429e13a6cede745d6, type: 3}
-  m_Name: PierceSO
+  m_Name: DamageSO
   m_EditorClassIdentifier: 
   MAX_CARD_LEVEL: 3
-  cardName: 
-  damage: 020000000300000004000000
+  cardName: Damage
+  damage: 050000000700000009000000
   shield: 000000000000000000000000
   heal: 000000000000000000000000
   poisonDamage: 000000000000000000000000

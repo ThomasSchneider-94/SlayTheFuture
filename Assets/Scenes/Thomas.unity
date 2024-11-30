@@ -508,6 +508,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2110945714365797061, guid: c28594cc244a18247ba49feda01b8ee7, type: 3}
+      propertyPath: maxHP
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 2677476787286077022, guid: c28594cc244a18247ba49feda01b8ee7, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1428,6 +1432,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1426011512016806433, guid: ae0d638c179cdfd48b11b5cbf96f029c, type: 3}
+      propertyPath: maxHP
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426011512016806433, guid: ae0d638c179cdfd48b11b5cbf96f029c, type: 3}
+      propertyPath: maxDeckSize
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426011512016806433, guid: ae0d638c179cdfd48b11b5cbf96f029c, type: 3}
+      propertyPath: maxHandSize
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5778261414514716348, guid: ae0d638c179cdfd48b11b5cbf96f029c, type: 3}
       propertyPath: m_Name
       value: Enemy

@@ -25,7 +25,11 @@ public class JsonDeck
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
+    
+    [SerializeField] private int maxPlayedCard = 3;
+    [SerializeField] private BattlePreparation battlePrep;
 
+    [Header("CardSO")]
     [SerializeField] CardSO dmgCard;
     [SerializeField] CardSO shieldCard;
     [SerializeField] CardSO HealCard;
@@ -34,10 +38,6 @@ public class BattleManager : MonoBehaviour
 
     private int currentFight;
     private int maxFightNumber;
-
-    [SerializeField] private int maxPlayedCard = 3;
-
-    [SerializeField] private BattlePreparation battlePrep;
 
     private readonly Dictionary<string, List<CardSO>> allDeckCards = new();
 
@@ -64,7 +64,6 @@ public class BattleManager : MonoBehaviour
 
     private void InitializeDecks()
     {
-
         JsonDecks allDeckData = JsonUtility.FromJson<JsonDecks>(Resources.Load<TextAsset>("DeckBuilds").text);
 
         foreach (JsonDeck deck in allDeckData.Decks)
@@ -72,8 +71,10 @@ public class BattleManager : MonoBehaviour
             allDeckCards[deck.name] = new();
             foreach (string card in deck.content)
             {
+                CardSO cardSO = ScriptableObject.CreateInstance<CardSO>();
+
                 // Switch for a single variable
-                CardSO cardSO = card switch
+                CardSO modelCard = card switch
                 {
                     "DamageCard" => dmgCard,
                     "PierceCard" => PierceCard,
@@ -82,6 +83,8 @@ public class BattleManager : MonoBehaviour
                     "PoisonCard" => PoisonCard,
                     _ => dmgCard,
                 };
+
+                cardSO.Init(modelCard);
                 allDeckCards[deck.name].Add(cardSO);
             }
         }
@@ -97,6 +100,9 @@ public class BattleManager : MonoBehaviour
         Player.Instance.ResetCurrentDeck();
         Enemy.Instance.ResetCurrentDeck();
 
+        Player.Instance.Draw();
+        Enemy.Instance.Draw();
+
         battlePrep.ResetBattle();
     }
 
@@ -104,30 +110,17 @@ public class BattleManager : MonoBehaviour
     {
         // Joueur les cartes de manières séquentielles -> OK
 
-        foreach (CardSO card in playerCards)
-        {
-            Debug.Log(card.cardName);
-        }
+        List<CardSO> enemyCards = Enemy.Instance.GetPlayedCards();
 
-        List<CardSO> enemyHand = Enemy.Instance.GetCurrentHand();
-        List<CardSO> enemyCards = new();
-        int numberOfEnemyCard = 0;
-
-        for (int i = 0; i < maxPlayedCard; i++)
-        {
-            enemyCards.Add(enemyCards[0]);
-            enemyHand.RemoveAt(0);
-            numberOfEnemyCard++;
-        }
-
-        while (playerCards.Count > 0 && numberOfEnemyCard > 0) 
+        while (playerCards.Count > 0 && enemyCards.Count > 0) 
         {
             CardSO currentPlayerCard = playerCards[0];
             playerCards.RemoveAt(0);
+            Debug.Log("Player: " + currentPlayerCard.cardName);
 
             CardSO currentEnemyCard = enemyCards[0];
             enemyCards.RemoveAt(0);
-            numberOfEnemyCard--;
+            Debug.Log("Enemy: " + currentEnemyCard.cardName);
 
             currentPlayerCard.OnUseCard(Player.Instance);
             currentEnemyCard.OnUseCard(Enemy.Instance);
@@ -135,14 +128,19 @@ public class BattleManager : MonoBehaviour
 
         // On vérifie si l'enemy a encore des cartes à jouer.
         // Cas ou le joueur décide de ne pas joueur trois cartes
-        if (enemyCards.Count > 0)
+        while (enemyCards.Count > 0)
         {
-            while(enemyCards.Count > 0)
-            {
-                CardSO currentEnemyCards = enemyCards[0];
-                enemyCards.RemoveAt(0);
-                currentEnemyCards.OnUseCard(Enemy.Instance);
-            }
+            CardSO currentEnemyCard = enemyCards[0];
+            enemyCards.RemoveAt(0);
+            Debug.Log("Enemy: " + currentEnemyCard.cardName);
+            currentEnemyCard.OnUseCard(Enemy.Instance);
+        }
+        while (playerCards.Count > 0)
+        {
+            CardSO currentPlayerCard = playerCards[0];
+            playerCards.RemoveAt(0);
+            Debug.Log("Player: " + currentPlayerCard.cardName);
+            currentPlayerCard.OnUseCard(Enemy.Instance);
         }
 
         // On passe à la logique post-tour
@@ -170,15 +168,10 @@ public class BattleManager : MonoBehaviour
         }
 
         // Vérifier si il reste des cartes dans le deck du joueur et dans le deck de l'enemy
-        if (Player.Instance.IsCurrentDeckEmpty() )
-        {
-            Player.Instance.ResetCurrentDeck();
-        }
+        Player.Instance.Draw();
+        Enemy.Instance.Draw();
 
-        if (Enemy.Instance.IsCurrentDeckEmpty())
-        {
-            Enemy.Instance.ResetCurrentDeck();
-        }
+        battlePrep.ResetBattle();
     }
 
     public void GameOver()
@@ -200,15 +193,4 @@ public class BattleManager : MonoBehaviour
     {
         return maxPlayedCard;
     }
-}
-
-
-class JsonTemp
-{
-    public string[] BalancedDeck;
-    public string[] AttackerDeck;
-    public string[] DefenderDeck;
-    public string[] PierceDeck;
-    public string[] PoisonDeck;
-    public string[] HealDeck;
 }

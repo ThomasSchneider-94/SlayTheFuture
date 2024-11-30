@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HealSO
   m_EditorClassIdentifier: 
   MAX_CARD_LEVEL: 3
-  cardName: 
+  cardName: Heal
   damage: 030000000400000005000000
   shield: 000000000000000000000000
   heal: 000000000000000000000000
