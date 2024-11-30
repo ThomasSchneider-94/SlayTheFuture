@@ -18,7 +18,8 @@ public class Fighter : MonoBehaviour
     private List<CardSO> deck;
     private int currentCardIndex = 0;
 
-    private Stack<CardSO> currentHand = new Stack<CardSO>();
+    private List<CardSO> currentPlayedCard = new List<CardSO>();
+    private List<CardSO> currentHand = new List<CardSO>();
     private List<CardSO> currentDeck = new List<CardSO>();
 
     private void Start()
@@ -78,10 +79,10 @@ public class Fighter : MonoBehaviour
 
     public void addCardToHand(CardSO cardToAdd)
     {
-        currentHand.Push(cardToAdd);
+        // TODO : à implémenter
     }
 
-    public Stack<CardSO> getCurrentHand()
+    public List<CardSO> getCurrentHand()
     {
         return currentHand;
     }
