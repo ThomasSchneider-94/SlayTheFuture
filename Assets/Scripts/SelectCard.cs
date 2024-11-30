@@ -16,7 +16,7 @@ public class SelectCard : MonoBehaviour
     [SerializeField] private MultiLayerButton cardPrefab;
 
     private readonly List<MultiLayerButton> buttons = new();
-    private readonly List<int> placedButtons = new();
+    [SerializeField] private readonly List<int> placedButtons = new();
 
     #region Init
     // Start is called before the first frame update
@@ -44,13 +44,11 @@ public class SelectCard : MonoBehaviour
         button.transform.SetParent(handLayout.transform);
         button.onClick.AddListener(delegate { ChangeButtonPosition(index); });
 
-        Debug.Log(index);
-
         buttons.Add(button);
     }
     #endregion Init
 
-    private void ResetCardPosition()
+    public  void ResetCardPosition()
     {
         foreach (int buttonIndex in placedButtons)
         {
@@ -99,5 +97,18 @@ public class SelectCard : MonoBehaviour
 
             buttons[index].transform.SetParent(playedCardPosition[placedButtons.Count - 1]);
         }
+    }
+
+    public void PlayTurn()
+    {
+        List<CardSO> cards = new();
+        List<CardSO> hand = player.getCurrentHand();
+
+        foreach (int cardIndex in placedButtons)
+        {
+            cards.Add(hand[cardIndex]);
+        }
+
+        BattleManager.Instance.PlayTurn(cards);
     }
 }

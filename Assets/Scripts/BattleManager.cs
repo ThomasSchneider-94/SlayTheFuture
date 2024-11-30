@@ -4,44 +4,49 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    public static BattleManager battleManagerInstance { get; private set; }
+    public static BattleManager Instance { get; private set; }
 
     private int currentFight;
     private int maxFightNumber;
 
     private void Awake()
     {
-        if (battleManagerInstance != null && battleManagerInstance != this)
+        if (Instance != null)
         {
             Destroy(this);
         }
         else
         {
-            battleManagerInstance = this;
+            Instance = this;
         }
     }
 
-    private void initiateBattle()
+    private void InitiateBattle()
     {
         // TODO : implémenter la logique
         // Récupérer l'enemy avec son deck
     }
 
-    private void turnPreparation()
+    private void TurnPreparation()
     {
         // Choisir les cartes du joueurs
         // Choisir les cartes de l'enemy
         // Utiliser ou non la perception
     }
 
-    private void playTurn()
+    public void PlayTurn(List<CardSO> playerCards)
     {
         // Joueur les cartes de manières séquentielles
         // Vérifier si un des deux fighter
 
-        List<CardSO> playerHand = Player.playerInstance.getCurrentHand();
+        foreach (CardSO card in playerCards)
+        {
+            Debug.Log(card.name);
+        }
+
         List<CardSO> enemyHand = Enemy.enemyInstance.getCurrentHand();
 
+        /*
         while (playerHand.Count > 0 && enemyHand.Count > 0)
         {
             //CardSO currentPlayerCard = playerHand.Pop();
@@ -59,7 +64,7 @@ public class BattleManager : MonoBehaviour
                 //CardSO currentPlayerCard = playerHand.Pop();
                 //currentPlayerCard.OnUseCard(); // TODO : joueur la carte du joueur
             }
-        }
+        }*/
 
         // Gérer le cas où la taille de la main de l'enemy est plus grande que celle du joueur
         if (enemyHand.Count > 0)
@@ -72,7 +77,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void postTurnLogic()
+    private void PostTurnLogic()
     {
         // Dégats de poison à la fin de l'utilisation des cartes -> OK
         // Réinitialiser les shields -> OK
@@ -103,18 +108,18 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void gameOver()
+    private void GameOver()
     {
         // TODO : implémenter la logique de défaite
         Application.Quit();
     }
 
-    private void nextBattle()
+    private void NextBattle()
     {
 
     }
 
-    public void winFight()
+    public void WinFight()
     {
         // Gestion de la récompense du comabt
         // Trois cas : améliorer une carte, changer une carte, (full) heal

@@ -26,7 +26,7 @@ public class Player : Fighter
     {
         if (hp + hpDelta <= 0)
         {
-            //BattleManager.battleManagerInstance.loseFight();
+            //BattleManager.Instance.loseFight();
         }
     }
 
