@@ -64,15 +64,12 @@ public class BattleManager : MonoBehaviour
 
     private void InitializeDecks()
     {
-        TextAsset test = Resources.Load<TextAsset>("DeckBuilds.json");
 
-
-        JsonDecks allDeckData = JsonUtility.FromJson<JsonDecks>(test.text);
-
-
+        JsonDecks allDeckData = JsonUtility.FromJson<JsonDecks>(Resources.Load<TextAsset>("DeckBuilds").text);
 
         foreach (JsonDeck deck in allDeckData.Decks)
         {
+            allDeckCards[deck.name] = new();
             foreach (string card in deck.content)
             {
                 // Switch for a single variable
