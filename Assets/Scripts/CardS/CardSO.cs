@@ -15,17 +15,13 @@ public class CardSO : ScriptableObject
     public int[] damage = new int[3];
     public int[] shield= new int[3];
     public int[] heal= new int[3];
+    public int[] poisonDamage = new int[3];
+    public int[] poisonDuration = new int[3];
     public ElementType elementType;
     public Sprite sprite;
     public string description;
 
 
-
-
-    void OnDrag()
-    {
-        //ToDo
-    }
 
     public void OnUseCard(Fighter thrower)
     {
@@ -38,9 +34,7 @@ public class CardSO : ScriptableObject
             receiver = Player.playerInstance;
         }
 
-        receiver.setShield(damage[currentLevel]);
-        thrower.setShield(shield[currentLevel]);
-        thrower.setHP(heal[currentLevel]);
+
 
 
         if (elementType == ElementType.ICE)
@@ -66,13 +60,15 @@ public class CardSO : ScriptableObject
             inflictPoison(receiver);
         }
 
-
+        receiver.setShield(damage[currentLevel]);
+        thrower.setShield(shield[currentLevel]);
+        thrower.setHP(heal[currentLevel]);
 
 
 
         void shieldBreak(Fighter receiver)
         {
-            //Todo
+            receiver.setShield(receiver.getShield());
         }
 
 
@@ -98,8 +94,9 @@ public class CardSO : ScriptableObject
 
         void inflictPoison(Fighter receiver)
         {
-            //Todo
+            receiver.addPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
         }
+
 
     }
 }
