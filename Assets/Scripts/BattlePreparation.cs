@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectCard : MonoBehaviour
+public class BattlePreparation : MonoBehaviour
 {
     [Header("Parameters")]
     [SerializeField] private List<Transform> playedCardPosition;
@@ -24,7 +24,7 @@ public class SelectCard : MonoBehaviour
     {
         CreateCardButtons();
 
-        ResetCardPosition();
+        ResetBattle();
 
         handLayout.constraintCount = player.GetMaxHandSize();
     }
@@ -48,7 +48,7 @@ public class SelectCard : MonoBehaviour
     }
     #endregion Init
 
-    public  void ResetCardPosition()
+    public void ResetBattle()
     {
         foreach (int buttonIndex in placedButtons)
         {
@@ -56,7 +56,19 @@ public class SelectCard : MonoBehaviour
         }
         placedButtons.Clear();
 
-        List<CardSO> hand = player.getCurrentHand();
+
+
+        //List<CardSO> hand = player.getCurrentHand();
+        List<CardSO> hand = new();
+        for (int j = 0; j < player.GetMaxHandSize(); j++)
+        {
+            hand.Add(new CardSO()
+            {
+                cardName = j.ToString(),
+
+            });
+        }
+
 
         int i = 0;
         while (i < hand.Count)
@@ -84,20 +96,40 @@ public class SelectCard : MonoBehaviour
             buttons[index].transform.SetParent(handLayout.transform);
             Debug.Log("Return to hand");
 
-            foreach(int buttonIndex in placedButtons)
+            for (int i = 0; i < placedButtons.Count; i++)
             {
-                buttons[buttonIndex].transform.SetParent(handLayout.transform);
+                buttons[placedButtons[i]].transform.SetParent(playedCardPosition[i]);
+                buttons[placedButtons[i]].transform.localPosition = Vector2.zero;
             }
         }
         else
         {
             if (placedButtons.Count >= playedCardPosition.Count) { return; }
 
+            Debug.Log("Placed button " + index);
+
+
             placedButtons.Add(index);
 
             buttons[index].transform.SetParent(playedCardPosition[placedButtons.Count - 1]);
+            buttons[index].transform.localPosition = Vector2.zero;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void PlayTurn()
     {
