@@ -4,17 +4,17 @@ using UnityEngine;
 
 
 
-
+[CreateAssetMenu()]
 
 public class CardSO : ScriptableObject
 {
-    [SerializeField] private int MAX_CARD_LEVEL = 2;
+    [SerializeField] private int MAX_CARD_LEVEL = 3;
 
     private int currentLevel;
     public string cardName;
-    public int[] damage = new int[2];
-    public int[] shield= new int[2];
-    public int[] heal= new int[2];
+    public int[] damage = new int[3];
+    public int[] shield= new int[3];
+    public int[] heal= new int[3];
     public ElementType elementType;
     public Sprite sprite;
     public string description;
