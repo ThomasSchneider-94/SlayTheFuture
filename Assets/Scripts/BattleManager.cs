@@ -9,7 +9,9 @@ public class BattleManager : MonoBehaviour
     private int currentFight;
     private int maxFightNumber;
 
-    //[SerializeField] private BattlePreparation;
+    [SerializeField] private int maxPlayedCard = 3;
+
+    [SerializeField] private BattlePreparation battlePrep;
 
     private void Awake()
     {
@@ -34,7 +36,7 @@ public class BattleManager : MonoBehaviour
         Player.playerInstance.resetCurrentDeck();
         Enemy.enemyInstance.resetCurrentDeck();
 
-        //BattlePreparation.
+        battlePrep.ResetBattle();
     }
 
     public void PlayTurn(List<CardSO> playerCards)
@@ -50,7 +52,7 @@ public class BattleManager : MonoBehaviour
         List<CardSO> enemyCards = new List<CardSO>();
         int numberOfEnemyCard = 0;
 
-        for (int i = 0; i <3; i++)
+        for (int i = 0; i < maxPlayedCard; i++)
         {
             enemyCards.Add(enemyCards[0]);
             enemyHand.RemoveAt(0);
@@ -80,7 +82,10 @@ public class BattleManager : MonoBehaviour
                 enemyCards.RemoveAt(0);
                 currentEnemyCards.OnUseCard(Enemy.enemyInstance);
             }
-        }        
+        }
+
+        // On passe à la logique post-tour
+        PostTurnLogic();
     }
 
     private void PostTurnLogic()
@@ -115,33 +120,18 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void GameOver()
+    public void GameOver()
     {
         // TODO : implémenter la logique de défaite
         Application.Quit();
     }
 
-    private void NextBattle()
+    public void NextBattle()
     {
-
-    }
-
-    public void WinFight()
-    {
-        // Gestion de la récompense du comabt
-        // Trois cas : améliorer une carte, changer une carte, (full) heal
+        // TODO : loot de fin de combat à implémenter
 
 
-
-        // Gestion du prochain combat
         currentFight++;
-        if (currentFight == maxFightNumber)
-        {
-            // TODO : gérer le cas du combat de boss
-        }
-        else
-        {
-            // TODO : gérer le cas du prochain enemy
-        }
+        InitiateBattle();
     }
 }
