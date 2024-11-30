@@ -54,7 +54,7 @@ public class Fighter : MonoBehaviour
     }
 
 
-    public void pioche()
+    public void draw()
     {
         if ((currentDeck.Count == 0) && (currentHand.Count == 0)){
             resetCurrentDeck();
