@@ -39,15 +39,15 @@ public class BattleManager : MonoBehaviour
         // Joueur les cartes de manières séquentielles
         // Vérifier si un des deux fighter
 
-        Stack<CardSO> playerHand = Player.playerInstance.getCurrentHand();
-        Stack<CardSO> enemyHand = Enemy.enemyInstance.getCurrentHand();
+        List<CardSO> playerHand = Player.playerInstance.getCurrentHand();
+        List<CardSO> enemyHand = Enemy.enemyInstance.getCurrentHand();
 
         while (playerHand.Count > 0 && enemyHand.Count > 0)
         {
-            CardSO currentPlayerCard = playerHand.Pop();
+            //CardSO currentPlayerCard = playerHand.Pop();
             //currentPlayerCard.OnUseCard(); // TDO : joueur la carte du joueur
 
-            CardSO currentEnemyCard = enemyHand.Pop();
+            //CardSO currentEnemyCard = enemyHand.Pop();
             //currentEnemyCard.OnUseCard(); //TODO : joueur la carte de l'enemy
         }
 
@@ -56,7 +56,7 @@ public class BattleManager : MonoBehaviour
         {
             while (playerHand.Count > 0)
             {
-                CardSO currentPlayerCard = playerHand.Pop();
+                //CardSO currentPlayerCard = playerHand.Pop();
                 //currentPlayerCard.OnUseCard(); // TODO : joueur la carte du joueur
             }
         }
@@ -66,7 +66,7 @@ public class BattleManager : MonoBehaviour
         {
             while (enemyHand.Count > 0)
             {
-                CardSO currentenemyCard = enemyHand.Pop();
+                //CardSO currentenemyCard = enemyHand.Pop();
                 //currentenemyCard.OnUseCard(); // TODO : joueur la carte du joueur
             }
         }
