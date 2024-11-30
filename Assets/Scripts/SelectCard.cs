@@ -58,7 +58,7 @@ public class SelectCard : MonoBehaviour
         }
         placedButtons.Clear();
 
-        Stack<CardSO> hand = player.getCurrentHand();
+        List<CardSO> hand = player.getCurrentHand();
 
         int i = 0;
         while (i < hand.Count)
