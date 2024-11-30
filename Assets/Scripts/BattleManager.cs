@@ -43,7 +43,7 @@ public class BattleManager : MonoBehaviour
 
         foreach (CardSO card in playerCards)
         {
-            Debug.Log(card.name);
+            Debug.Log(card.cardName);
         }
 
         List<CardSO> enemyHand = Enemy.enemyInstance.getCurrentHand();
