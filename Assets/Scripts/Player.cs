@@ -22,7 +22,7 @@ public class Player : Fighter
         }
     }
 
-    public override void setHP(int hpDelta)
+    public override void SetHP(int hpDelta)
     {
         if (hp + hpDelta <= 0)
         {

@@ -85,18 +85,18 @@ public class BattleManager : MonoBehaviour
     {
         // initialiser le deck de l'enemy
         // Shuffle les decks du player et de l'enemy
-        if (Player.playerInstance.getCurrentDeck() == null)
+        if (Player.playerInstance.GetCurrentDeck() == null)
         {
-            Player.playerInstance.setCurrentDeck(ParseJson());
+            Player.playerInstance.SetCurrentDeck(ParseJson());
         }
 
-        Enemy.enemyInstance.setCurrentDeck(allDeckCards["AttackerDeck"]);
+        Enemy.enemyInstance.SetCurrentDeck(allDeckCards["AttackerDeck"]);
 
         // TODO : initialiser le deck de l'enemy à partir du JSON
 
         // Shuffle
-        Player.playerInstance.resetCurrentDeck();
-        Enemy.enemyInstance.resetCurrentDeck();
+        Player.playerInstance.ResetCurrentDeck();
+        Enemy.enemyInstance.ResetCurrentDeck();
 
         battlePrep.ResetBattle();
     }
@@ -110,7 +110,7 @@ public class BattleManager : MonoBehaviour
             Debug.Log(card.cardSO.cardName);
         }
 
-        List<Card> enemyHand = Enemy.enemyInstance.getCurrentHand();
+        List<Card> enemyHand = Enemy.enemyInstance.GetCurrentHand();
         List<Card> enemyCards = new List<Card>();
         int numberOfEnemyCard = 0;
 
@@ -157,12 +157,12 @@ public class BattleManager : MonoBehaviour
         // Vérifier les cartes restantes dans le deck -> OK
 
         // Application des dégâts de poison
-        Enemy.enemyInstance.consumePoisonStack();
-        Player.playerInstance.consumePoisonStack();
+        Enemy.enemyInstance.ConsumePoisonStack();
+        Player.playerInstance.ConsumePoisonStack();
 
         // Supprimer les shields à la fin du tours
-        Player.playerInstance.setShield(Player.playerInstance.getShield());
-        Enemy.enemyInstance.setShield(Enemy.enemyInstance.getShield());
+        Player.playerInstance.SetShield(Player.playerInstance.GetShield());
+        Enemy.enemyInstance.SetShield(Enemy.enemyInstance.GetShield());
 
         // Si le joueur n'a pas utilisé de perception se tour, lui augmenter
         if (!Player.playerInstance.getPerceptionStatus())
@@ -171,14 +171,14 @@ public class BattleManager : MonoBehaviour
         }
 
         // Vérifier si il reste des cartes dans le deck du joueur et dans le deck de l'enemy
-        if (Player.playerInstance.isCurrentDeckEmpty() )
+        if (Player.playerInstance.IsCurrentDeckEmpty() )
         {
-            Player.playerInstance.resetCurrentDeck();
+            Player.playerInstance.ResetCurrentDeck();
         }
 
-        if (Enemy.enemyInstance.isCurrentDeckEmpty())
+        if (Enemy.enemyInstance.IsCurrentDeckEmpty())
         {
-            Enemy.enemyInstance.resetCurrentDeck();
+            Enemy.enemyInstance.ResetCurrentDeck();
         }
     }
 
@@ -195,6 +195,11 @@ public class BattleManager : MonoBehaviour
 
         currentFight++;
         InitiateBattle();
+    }
+
+    public int GetMaxPlayedCard()
+    {
+        return maxPlayedCard;
     }
 }
 

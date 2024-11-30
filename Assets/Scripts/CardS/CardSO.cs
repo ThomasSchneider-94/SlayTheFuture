@@ -60,15 +60,15 @@ public class CardSO : ScriptableObject
             inflictPoison(receiver);
         }
 
-        receiver.setShield(damage[currentLevel]);
-        thrower.setShield(shield[currentLevel]);
-        thrower.setHP(heal[currentLevel]);
+        receiver.SetShield(damage[currentLevel]);
+        thrower.SetShield(shield[currentLevel]);
+        thrower.SetHP(heal[currentLevel]);
 
 
 
         void shieldBreak(Fighter receiver)
         {
-            receiver.setShield(receiver.getShield());
+            receiver.SetShield(receiver.GetShield());
         }
 
 
@@ -94,7 +94,7 @@ public class CardSO : ScriptableObject
 
         void inflictPoison(Fighter receiver)
         {
-            receiver.addPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
+            receiver.AddPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
         }
 
 

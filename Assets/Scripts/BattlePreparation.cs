@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 public class BattlePreparation : MonoBehaviour
@@ -12,10 +13,13 @@ public class BattlePreparation : MonoBehaviour
      *          return current hand
      */
 
-    [Header("Parameters")]
+    [Header("General")]
     [SerializeField] private GridLayoutGroup handLayout;
-    [SerializeField] private Fighter player;
-    [SerializeField] private List<Transform> playedCardPosition;
+    [Header("Player")]
+    [SerializeField] private Player player;
+    [SerializeField] private List<Transform> playerCardPosition;
+    [Header("Enemy")]
+    [SerializeField] private Enemy enemy;
     [SerializeField] private List<Transform> enemyCardPosition;
 
     [Header("Prefab")]
@@ -25,16 +29,21 @@ public class BattlePreparation : MonoBehaviour
     // Player Cards
     private readonly List<MultiLayerButton> playerCardButtons = new();
     private readonly List<int> placedButtons = new();
-    private List<CardSO> playerHand;
+    private List<Card> playerHand;
 
     // Enemy cards
     private readonly List<MultiLayerButton> enemyCardButtons = new();
-    private List<bool> isRevealed = new();
+    private List<bool> enemyCardRevealed = new();
 
     #region Init
     // Start is called before the first frame update
     void Start()
     {
+        if (BattleManager.Instance.GetMaxPlayedCard() != playerCardPosition.Count || BattleManager.Instance.GetMaxPlayedCard() != enemyCardPosition.Count)
+        {
+            Debug.LogError("Max play card and played card position size does not match");
+        }
+
         CreateCardButtons();
 
         ResetBattle();
@@ -48,11 +57,11 @@ public class BattlePreparation : MonoBehaviour
         {
             CreatePlayerCardButton(i);
         }
-        /*
-        for (int i = 0; i < BattleManager.Instance; i++)
+        
+        for (int i = 0; i < BattleManager.Instance.GetMaxPlayedCard(); i++)
         {
-            CreatePlayerCardButton(i);
-        }*/
+            CreateEnemyCardButton(i);
+        }
     }
 
     private void CreatePlayerCardButton(int index)
@@ -76,12 +85,8 @@ public class BattlePreparation : MonoBehaviour
         button.onClick.AddListener(delegate { RevealCard(index); });
 
         enemyCardButtons.Add(button);
-        isRevealed.Add(false);
+        enemyCardRevealed.Add(false);
     }
-
-
-
-
     #endregion Init
 
     public void ResetBattle()
@@ -92,19 +97,39 @@ public class BattlePreparation : MonoBehaviour
         }
         placedButtons.Clear();
 
-        //playerHand = player.getCurrentHand();
-        playerHand = new();
-        for (int j = 0; j < player.GetMaxHandSize(); j++)
-        {
-            playerHand.Add(new CardSO()
-            {
-                cardName = j.ToString(),
 
-            });
+        //playerHand = player.GetCurrentHand();
+        playerHand = new();
+        for (int k = 0; k < player.GetMaxHandSize(); k++)
+        {
+            playerHand.Add(new Card());
         }
 
+        // Player Cards
         int i = 0;
         while (i < playerHand.Count)
+        {
+            playerCardButtons[i].gameObject.SetActive(true);
+
+
+            // TODO
+
+
+            i++;
+        }
+        while (i < player.GetMaxHandSize())
+        {
+            playerCardButtons[i].gameObject.SetActive(false);
+            i++;
+        }
+
+        // Enemy Cards
+        int j = 0;
+        //List<CardSO> enemyCards = enemy.get;
+
+
+
+        while (j < playerHand.Count)
         {
             playerCardButtons[i].gameObject.SetActive(true);
 
@@ -131,7 +156,7 @@ public class BattlePreparation : MonoBehaviour
 
             for (int i = 0; i < placedButtons.Count; i++)
             {
-                playerCardButtons[placedButtons[i]].transform.SetParent(playedCardPosition[i]);
+                playerCardButtons[placedButtons[i]].transform.SetParent(playerCardPosition[i]);
                 playerCardButtons[placedButtons[i]].transform.localPosition = Vector2.zero;
             }
 
@@ -145,21 +170,24 @@ public class BattlePreparation : MonoBehaviour
         }
         else
         {
-            if (placedButtons.Count >= playedCardPosition.Count) { return; }
+            if (placedButtons.Count >= playerCardPosition.Count) { return; }
 
             Debug.Log("Placed button " + index);
 
 
             placedButtons.Add(index);
 
-            playerCardButtons[index].transform.SetParent(playedCardPosition[placedButtons.Count - 1]);
+            playerCardButtons[index].transform.SetParent(playerCardPosition[placedButtons.Count - 1]);
             playerCardButtons[index].transform.localPosition = Vector2.zero;
         }
     }
 
     private void RevealCard(int index)
     {
+        if (enemyCardRevealed[index]) { return; }
 
+        Debug.Log("Reveal");
+        enemyCardRevealed[index] = true;
     }
 
 
@@ -170,7 +198,7 @@ public class BattlePreparation : MonoBehaviour
 
     public void PlayTurn()
     {
-        List<CardSO> cards = new();
+        List<Card> cards = new();
 
         foreach (int cardIndex in placedButtons)
         {
