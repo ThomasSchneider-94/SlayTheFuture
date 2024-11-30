@@ -1,13 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
 
+    [SerializeField] CardSO dmgCard;
+    [SerializeField] CardSO shieldCard;
+    [SerializeField] CardSO HealCard;
+    [SerializeField] CardSO PierceCard;
+    [SerializeField] CardSO PoisonCard;
+
     private int currentFight;
     private int maxFightNumber;
+
+    [SerializeField] private int maxPlayedCard = 3;
+
+    [SerializeField] private BattlePreparation battlePrep;
+
+    Dictionary<string, List<Card>> allDeckCards = new Dictionary<string, List<Card>>();
 
     private void Awake()
     {
@@ -18,63 +33,121 @@ public class BattleManager : MonoBehaviour
         else
         {
             Instance = this;
-        }
+        }   
+
     }
+
+    private List<Card> ParseJson()
+    {
+        Dictionary<string, string[]> allDeckData = JsonUtility.FromJson<Dictionary<string,string[]>>(Resources.Load("DeckBuilds").ToString());
+
+
+        List<Card> playerDeck = new List<Card>();
+        foreach (string key in allDeckData.Keys)
+        {
+            foreach (string cardname in allDeckData[key])
+            {
+                Card card = new Card();
+                switch (cardname)
+                {
+                    case "DamageCard":
+                        card.SetCardSO(dmgCard);
+                        break;
+                    case "PierceCard":
+                        card.SetCardSO(PierceCard);
+                        break;
+                    case "ShieldCard":
+                        card.SetCardSO(shieldCard);
+                        break;
+                    case "HealCard":
+                        card.SetCardSO(HealCard);
+                        break;
+                    case "PoisonCard":
+                        card.SetCardSO(PoisonCard);
+                        break;
+
+
+                }
+
+                allDeckCards[key].Add(card);
+            }
+        }
+
+        playerDeck = allDeckCards["BalancedDeck"];
+        return playerDeck;
+
+    }
+
+    
+
 
     private void InitiateBattle()
     {
-        // TODO : implémenter la logique
-        // Récupérer l'enemy avec son deck
+        // initialiser le deck de l'enemy
+        // Shuffle les decks du player et de l'enemy
+        if (Player.playerInstance.GetCurrentDeck() == null)
+        {
+            Player.playerInstance.SetCurrentDeck(ParseJson());
+        }
+
+        Enemy.enemyInstance.SetCurrentDeck(allDeckCards["AttackerDeck"]);
+
+        // TODO : initialiser le deck de l'enemy à partir du JSON
+
+        // Shuffle
+        Player.playerInstance.ResetCurrentDeck();
+        Enemy.enemyInstance.ResetCurrentDeck();
+
+        battlePrep.ResetBattle();
     }
 
-    private void TurnPreparation()
+    public void PlayTurn(List<Card> playerCards)
     {
-        // Choisir les cartes du joueurs
-        // Choisir les cartes de l'enemy
-        // Utiliser ou non la perception
-    }
+        // Joueur les cartes de manières séquentielles -> OK
 
-    public void PlayTurn(List<CardSO> playerCards)
-    {
-        // Joueur les cartes de manières séquentielles
-        // Vérifier si un des deux fighter
-
-        foreach (CardSO card in playerCards)
+        foreach (Card card in playerCards)
         {
-            Debug.Log(card.name);
+            Debug.Log(card.cardSO.cardName);
         }
 
-        List<CardSO> enemyHand = Enemy.enemyInstance.getCurrentHand();
+        List<Card> enemyHand = Enemy.enemyInstance.GetCurrentHand();
+        List<Card> enemyCards = new List<Card>();
+        int numberOfEnemyCard = 0;
 
-        /*
-        while (playerHand.Count > 0 && enemyHand.Count > 0)
+        for (int i = 0; i < maxPlayedCard; i++)
         {
-            //CardSO currentPlayerCard = playerHand.Pop();
-            //currentPlayerCard.OnUseCard(); // TDO : joueur la carte du joueur
-
-            //CardSO currentEnemyCard = enemyHand.Pop();
-            //currentEnemyCard.OnUseCard(); //TODO : joueur la carte de l'enemy
+            enemyCards.Add(enemyCards[0]);
+            enemyHand.RemoveAt(0);
+            numberOfEnemyCard++;
         }
 
-        // Gérer le cas ou la taille de la main du joueur est plsu grande que celle de l'enemy
-        if (playerHand.Count > 0)
+        while (playerCards.Count > 0 && numberOfEnemyCard > 0) 
         {
-            while (playerHand.Count > 0)
-            {
-                //CardSO currentPlayerCard = playerHand.Pop();
-                //currentPlayerCard.OnUseCard(); // TODO : joueur la carte du joueur
-            }
-        }*/
+            Card currentPlayerCard = playerCards[0];
+            playerCards.RemoveAt(0);
 
-        // Gérer le cas où la taille de la main de l'enemy est plus grande que celle du joueur
-        if (enemyHand.Count > 0)
+            Card currentEnemyCard = enemyCards[0];
+            enemyCards.RemoveAt(0);
+            numberOfEnemyCard--;
+
+            currentPlayerCard.cardSO.OnUseCard(Player.playerInstance);
+            currentEnemyCard.cardSO.OnUseCard(Enemy.enemyInstance);
+        }
+
+        // On vérifie si l'enemy a encore des cartes à jouer.
+        // Cas ou le joueur décide de ne pas joueur trois cartes
+        if (enemyCards.Count > 0)
         {
-            while (enemyHand.Count > 0)
+            while(enemyCards.Count > 0)
             {
-                //CardSO currentenemyCard = enemyHand.Pop();
-                //currentenemyCard.OnUseCard(); // TODO : joueur la carte du joueur
+                Card currentEnemyCards = enemyCards[0];
+                enemyCards.RemoveAt(0);
+                currentEnemyCards.cardSO.OnUseCard(Enemy.enemyInstance);
             }
         }
+
+        // On passe à la logique post-tour
+        PostTurnLogic();
     }
 
     private void PostTurnLogic()
@@ -83,12 +156,13 @@ public class BattleManager : MonoBehaviour
         // Réinitialiser les shields -> OK
         // Vérifier les cartes restantes dans le deck -> OK
 
-        // Infliger les dégats de poisons à la fin du tour
-        Player.playerInstance.consumePoisonStack();
+        // Application des dégâts de poison
+        Enemy.enemyInstance.ConsumePoisonStack();
+        Player.playerInstance.ConsumePoisonStack();
 
         // Supprimer les shields à la fin du tours
-        Player.playerInstance.setShield(Player.playerInstance.getShield());
-        Enemy.enemyInstance.setShield(Enemy.enemyInstance.getShield());
+        Player.playerInstance.SetShield(Player.playerInstance.GetShield());
+        Enemy.enemyInstance.SetShield(Enemy.enemyInstance.GetShield());
 
         // Si le joueur n'a pas utilisé de perception se tour, lui augmenter
         if (!Player.playerInstance.getPerceptionStatus())
@@ -97,44 +171,45 @@ public class BattleManager : MonoBehaviour
         }
 
         // Vérifier si il reste des cartes dans le deck du joueur et dans le deck de l'enemy
-        if (Player.playerInstance.isCurrentDeckEmpty())
+        if (Player.playerInstance.IsCurrentDeckEmpty() )
         {
-            Player.playerInstance.resetCurrentDeck();
+            Player.playerInstance.ResetCurrentDeck();
         }
 
-        if (Enemy.enemyInstance.isCurrentDeckEmpty())
+        if (Enemy.enemyInstance.IsCurrentDeckEmpty())
         {
-            Enemy.enemyInstance.resetCurrentDeck();
+            Enemy.enemyInstance.ResetCurrentDeck();
         }
     }
 
-    private void GameOver()
+    public void GameOver()
     {
         // TODO : implémenter la logique de défaite
         Application.Quit();
     }
 
-    private void NextBattle()
+    public void NextBattle()
     {
-
-    }
-
-    public void WinFight()
-    {
-        // Gestion de la récompense du comabt
-        // Trois cas : améliorer une carte, changer une carte, (full) heal
+        // TODO : loot de fin de combat à implémenter
 
 
-
-        // Gestion du prochain combat
         currentFight++;
-        if (currentFight == maxFightNumber)
-        {
-            // TODO : gérer le cas du combat de boss
-        }
-        else
-        {
-            // TODO : gérer le cas du prochain enemy
-        }
+        InitiateBattle();
     }
+
+    public int GetMaxPlayedCard()
+    {
+        return maxPlayedCard;
+    }
+}
+
+
+class JsonTemp
+{
+    public string[] BalancedDeck;
+    public string[] AttackerDeck;
+    public string[] DefenderDeck;
+    public string[] PierceDeck;
+    public string[] PoisonDeck;
+    public string[] HealDeck;
 }

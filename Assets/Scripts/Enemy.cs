@@ -18,12 +18,21 @@ public class Enemy : Fighter
         }
     }
 
-    public override void setHP(int hpDelta)
+    public override void SetHP(int hpDelta)
     {
         if (hp + hpDelta <= 0)
         {
-            BattleManager.Instance.WinFight();
+            BattleManager.Instance.NextBattle();
+            return;
         }
+
+        if (hp + hpDelta > maxHP)
+        {
+            hp = maxHP;
+            return;
+        }
+
+        hp += hpDelta;
     }
 
 }

@@ -61,6 +61,7 @@ public class CardSO : ScriptableObject
             inflictPoison(receiver);
         }
 
+<<<<<<< HEAD
         shieldBreak(receiver);
 
 
@@ -68,6 +69,46 @@ public class CardSO : ScriptableObject
         thrower.setShield(shield[currentLevel]);
         thrower.setHP(heal[currentLevel]);
 
+=======
+        receiver.SetShield(damage[currentLevel]);
+        thrower.SetShield(shield[currentLevel]);
+        thrower.SetHP(heal[currentLevel]);
+
+
+
+        void shieldBreak(Fighter receiver)
+        {
+            receiver.SetShield(receiver.GetShield());
+        }
+
+
+        void inflictIce(Fighter receiver)
+        {
+            //Todo
+        }
+
+        void inflictFire(Fighter receiver)
+        {
+            //Todo
+        }
+
+        void inflictGroud(Fighter receiver)
+        {
+            //Todo
+        }
+
+        void inflictPlant(Fighter receiver)
+        {
+            //Todo
+        }
+
+        void inflictPoison(Fighter receiver)
+        {
+            receiver.AddPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
+        }
+
+
+>>>>>>> 9bf47a567296b5cf2a1a44825311c2332c04a531
     }
 
     void shieldBreak(Fighter receiver)
