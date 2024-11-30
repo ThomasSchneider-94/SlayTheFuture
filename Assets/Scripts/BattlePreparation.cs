@@ -16,7 +16,8 @@ public class BattlePreparation : MonoBehaviour
     [SerializeField] private MultiLayerButton cardPrefab;
 
     private readonly List<MultiLayerButton> buttons = new();
-    [SerializeField] private readonly List<int> placedButtons = new();
+    [SerializeField] private List<int> placedButtons = new();
+    private List<CardSO> playerHand; 
 
     #region Init
     // Start is called before the first frame update
@@ -42,6 +43,8 @@ public class BattlePreparation : MonoBehaviour
         MultiLayerButton button = GameObject.Instantiate<MultiLayerButton>(cardPrefab);
 
         button.transform.SetParent(handLayout.transform);
+        button.transform.localScale = Vector2.one;
+
         button.onClick.AddListener(delegate { ChangeButtonPosition(index); });
 
         buttons.Add(button);
@@ -56,13 +59,11 @@ public class BattlePreparation : MonoBehaviour
         }
         placedButtons.Clear();
 
-
-
-        //List<CardSO> hand = player.getCurrentHand();
-        List<CardSO> hand = new();
+        //playerHand = player.getCurrentHand();
+        playerHand = new();
         for (int j = 0; j < player.GetMaxHandSize(); j++)
         {
-            hand.Add(new CardSO()
+            playerHand.Add(new CardSO()
             {
                 cardName = j.ToString(),
 
@@ -71,7 +72,7 @@ public class BattlePreparation : MonoBehaviour
 
 
         int i = 0;
-        while (i < hand.Count)
+        while (i < playerHand.Count)
         {
             buttons[i].gameObject.SetActive(true);
 
@@ -100,6 +101,18 @@ public class BattlePreparation : MonoBehaviour
             {
                 buttons[placedButtons[i]].transform.SetParent(playedCardPosition[i]);
                 buttons[placedButtons[i]].transform.localPosition = Vector2.zero;
+            }
+
+
+
+
+
+            for (int i = 0; i < buttons.Count; i++)
+            {
+                if (!placedButtons.Contains(i))
+                {
+                    buttons[i].transform.SetAsLastSibling();
+                }
             }
         }
         else
@@ -134,11 +147,10 @@ public class BattlePreparation : MonoBehaviour
     public void PlayTurn()
     {
         List<CardSO> cards = new();
-        List<CardSO> hand = player.getCurrentHand();
 
         foreach (int cardIndex in placedButtons)
         {
-            cards.Add(hand[cardIndex]);
+            cards.Add(playerHand[cardIndex]);
         }
 
         BattleManager.Instance.PlayTurn(cards);
