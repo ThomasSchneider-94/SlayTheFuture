@@ -1,107 +1,124 @@
 {
-	"BalancedDeck" : [
-	"DamageCard",
-	"DamageCard",
-	"DamageCard",
-	"PierceCard",
-	"PierceCard",
-	"PierceCard",
-	"ShieldCard",
-	"ShieldCard",
-	"ShieldCard",
-	"HealCard",
-	"HealCard",
-	"HealCard",
-	"PoisonCard",
-	"PoisonCard",
-	"PoisonCard" ],
-	
-	"AttackerDeck" : [
-	"DamageCard",
-	"DamageCard",
-	"DamageCard",
-	"DamageCard",
-	"DamageCard",
-	"PierceCard",
-	"PierceCard",
-	"PierceCard",
-	"PierceCard",
-	"ShieldCard",
-	"ShieldCard",
-	"HealCard",
-	"HealCard",
-	"PoisonCard",
-	"PoisonCard" ],
-	
-	"DefenderDeck" : [
-	"DamageCard",
-	"DamageCard",
-	"PierceCard",
-	"PierceCard",
-	"ShieldCard",
-	"ShieldCard",
-	"ShieldCard",
-	"ShieldCard",
-	"HealCard",
-	"HealCard",
-	"HealCard",
-	"HealCard",
-	"PoisonCard",
-	"PoisonCard",
-	"PoisonCard" ],
-	
-	"PierceDeck" : [
-	"DamageCard",
-	"DamageCard",
-	"PierceCard",
-	"PierceCard",
-	"PierceCard",
-	"PierceCard",
-	"PierceCard",
-	"ShieldCard",
-	"ShieldCard",
-	"HealCard",
-	"HealCard",
-	"PoisonCard",
-	"PoisonCard",
-	"PoisonCard",
-	"PoisonCard"
-	],
-	
-	"PoisonDeck" : [
-	"DamageCard",
-	"DamageCard",
-	"PierceCard",
-	"PierceCard",
-	"PierceCard",
-	"ShieldCard",
-	"ShieldCard",
-	"ShieldCard",
-	"HealCard",
-	"HealCard",
-	"PoisonCard",
-	"PoisonCard",
-	"PoisonCard",
-	"PoisonCard",
-	"PoisonCard"
-	],
-	
-	"HealDeck" : [
-	"DamageCard",
-	"DamageCard",
-	"PierceCard",
-	"PierceCard",
-	"ShieldCard",
-	"ShieldCard",
-	"ShieldCard",
-	"ShieldCard",
-	"HealCard",
-	"HealCard",
-	"HealCard",
-	"HealCard",
-	"HealCard",
-	"PoisonCard",
-	"PoisonCard"
+	"Decks": [
+		{
+			"name": "BalancedDeck",
+			"content": [
+				"DamageCard",
+				"DamageCard",
+				"DamageCard",
+				"PierceCard",
+				"PierceCard",
+				"PierceCard",
+				"ShieldCard",
+				"ShieldCard",
+				"ShieldCard",
+				"HealCard",
+				"HealCard",
+				"HealCard",
+				"PoisonCard",
+				"PoisonCard",
+				"PoisonCard"
+			]
+		},
+		{
+			"name": "AttackerDeck",
+			"content": [
+				"DamageCard",
+				"DamageCard",
+				"DamageCard",
+				"DamageCard",
+				"DamageCard",
+				"PierceCard",
+				"PierceCard",
+				"PierceCard",
+				"PierceCard",
+				"ShieldCard",
+				"ShieldCard",
+				"HealCard",
+				"HealCard",
+				"PoisonCard",
+				"PoisonCard"
+			]
+		},
+		{
+			"name": "DefenderDeck",
+			"content": [
+				"DamageCard",
+				"DamageCard",
+				"PierceCard",
+				"PierceCard",
+				"ShieldCard",
+				"ShieldCard",
+				"ShieldCard",
+				"ShieldCard",
+				"HealCard",
+				"HealCard",
+				"HealCard",
+				"HealCard",
+				"PoisonCard",
+				"PoisonCard",
+				"PoisonCard"
+			]
+		},
+		{
+			"name": "PierceDeck",
+			"content": [
+				"DamageCard",
+				"DamageCard",
+				"PierceCard",
+				"PierceCard",
+				"PierceCard",
+				"PierceCard",
+				"PierceCard",
+				"ShieldCard",
+				"ShieldCard",
+				"HealCard",
+				"HealCard",
+				"PoisonCard",
+				"PoisonCard",
+				"PoisonCard",
+				"PoisonCard"
+			]
+		},
+		{
+			"name": "PoisonDeck",
+			"content": [
+				"DamageCard",
+				"DamageCard",
+				"PierceCard",
+				"PierceCard",
+				"PierceCard",
+				"ShieldCard",
+				"ShieldCard",
+				"ShieldCard",
+				"HealCard",
+				"HealCard",
+				"PoisonCard",
+				"PoisonCard",
+				"PoisonCard",
+				"PoisonCard",
+				"PoisonCard"
+			]
+		},
+		{
+			"name": "HealDeck",
+			"content": [
+				"DamageCard",
+				"DamageCard",
+				"PierceCard",
+				"PierceCard",
+				"ShieldCard",
+				"ShieldCard",
+				"ShieldCard",
+				"ShieldCard",
+				"HealCard",
+				"HealCard",
+				"HealCard",
+				"HealCard",
+				"HealCard",
+				"PoisonCard",
+				"PoisonCard"
+			]
+		}
 	]
-	
 }

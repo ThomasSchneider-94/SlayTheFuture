@@ -15,11 +15,11 @@ public abstract class Fighter : MonoBehaviour
     private List<(int, int)> poison = new();
 
 
-    private List<Card> deck;
+    private List<CardSO> deck;
     private int currentCardIndex = 0;
 
-    private List<Card> currentHand = new List<Card>();
-    private List<Card> currentDeck = new List<Card>();
+    private List<CardSO> currentHand = new();
+    private List<CardSO> currentDeck = new();
 
     private void Start()
     {
@@ -28,9 +28,20 @@ public abstract class Fighter : MonoBehaviour
         deck = new(15);
     }
 
+    public void InitDeck(List<CardSO> baseDeck)
+    {
+        this.deck = baseDeck;
+    }
+    public void ChangeDeckCard(CardSO oldCard, CardSO newCard)
+    {
+        deck.Remove(oldCard);
+        deck.Add(newCard);
+    }
+
+    #region Current Deck
     public void ResetCurrentDeck()
     {
-        currentDeck = new List<Card>();
+        currentDeck = new();
 
         foreach (var card in deck)
         {
@@ -40,52 +51,58 @@ public abstract class Fighter : MonoBehaviour
         ShuffleList(currentDeck);
     }
 
-    public void ShuffleList(List<Card> list){
-        
-    int n = list.Count;  
-        while (n > 1) {  
-            n--;  
+    private static void ShuffleList(List<CardSO> list)
+    {
+
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
             int k = Random.Range(0, n);
-            Card tmp = list[k];  
-            list[k] = list[n];  
-            list[n] = tmp;  
+            CardSO tmp = list[k];
+            list[k] = list[n];
+            list[n] = tmp;
         }
     }
 
     public void Draw()
     {
-        if ((currentDeck.Count == 0) && (currentHand.Count == 0)){
+        if (currentDeck.Count == 0 && currentHand.Count == 0)
+        {
             ResetCurrentDeck();
         }
 
-        while ((currentDeck.Count > 0) && (currentHand.Count < 5)){
-            Card card = currentDeck[0];
+        while ((currentDeck.Count > 0) && (currentHand.Count < 5))
+        {
+            CardSO card = currentDeck[0];
             currentDeck.RemoveAt(0);
             currentHand.Add(card);
         }
-
-    }
-
-    public void AddCard(Card card)
-    {
-        deck[currentCardIndex] = card;
-        currentCardIndex++;
-    }
-
-    public void DiscardCard(Card card)
-    {
-        currentDeck.Remove(card);
-    }
-
-    public void AddCardToHand(Card cardToAdd)
-    {
-        // TODO : � impl�menter
     }
 
     public bool IsCurrentDeckEmpty()
     {
         return (currentDeck.Count <= 0);
     }
+
+    public List<CardSO> GetCurrentDeck()
+    {
+        return currentDeck;
+    }
+    #endregion Current Deck
+
+    #region Hand
+    public void SetCurrentHand(List<CardSO> hand)
+    {
+        this.currentHand = hand;
+    }
+
+    public List<CardSO> GetCurrentHand()
+    {
+        return currentHand;
+    }
+
+    #endregion Hand
 
     public void AddPoisonStack(int damage, int duration)
     {
@@ -103,17 +120,8 @@ public abstract class Fighter : MonoBehaviour
         }
     }
 
-    public bool IsCurrentHandEmpty()
-    {
-        return (currentHand.Count <= 0);
-    }
 
     #region Setter
-    public void SetCurrentDeck(List<Card> deck)
-    {
-        currentDeck = deck;
-    }
-
     public abstract void SetHP(int hpDelta);
 
     public void SetShield(int shieldDelta)
@@ -125,19 +133,9 @@ public abstract class Fighter : MonoBehaviour
             shield = 0;
         }
     }
-
-    public void SetCurrentHand(List<Card> hand)
-    {
-        this.currentHand = hand;
-    }
     #endregion Setter
 
     #region Getter
-    public List<Card> GetCurrentDeck()
-    {
-        return currentDeck;
-    }
-
     public int GetHP()
     {
         return hp;
@@ -147,12 +145,7 @@ public abstract class Fighter : MonoBehaviour
     {
         return shield;
     }
-
-    public List<Card> GetCurrentHand()
-    {
-        return currentHand;
-    }
-
+    
     public int GetMaxHandSize()
     {
         return maxHandSize;

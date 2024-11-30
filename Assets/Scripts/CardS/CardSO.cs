@@ -26,12 +26,12 @@ public class CardSO : ScriptableObject
     public void OnUseCard(Fighter thrower)
     {
         Fighter receiver;
-        if (thrower == Player.playerInstance)
+        if (thrower == Player.Instance)
         {
-            receiver = Enemy.enemyInstance;
+            receiver = Enemy.Instance;
         }
         else {
-            receiver = Player.playerInstance;
+            receiver = Player.Instance;
         }
 
 
