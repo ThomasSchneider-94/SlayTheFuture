@@ -108,11 +108,12 @@ public class BattleManager : MonoBehaviour
         battlePrep.ResetBattle();
     }
 
-    public IEnumerator PlayCardAnimation(bool player, int index)
+    public IEnumerator PlayCardAnimation(bool targetBool, int index, bool player)
     {
-        //CardButton cardToAnimate = battlePrep.
+        CardButton cardToAnimate = battlePrep.GetCardButton(player, index);
+        cardToAnimate.ApplyCard();
         GameObject target;
-        if (player)
+        if (targetBool)
         {
             target = Player.Instance.gameObject;
         }
@@ -122,13 +123,17 @@ public class BattleManager : MonoBehaviour
         }
 
         float t = 0;
+        Vector3 startPosition = cardToAnimate.transform.position;
+
         while (t < animationTime)
         {
-            Vector3.Lerp(cardToAnimate, target.transform.position, t);
+            cardToAnimate.transform.position = Vector3.Lerp(startPosition, target.transform.position, t/animationTime);
 
             t += Time.deltaTime;
             yield return null;
         }
+
+        cardToAnimate.gameObject.SetActive(false);
     }
 
     public IEnumerator PlayTurn(List<Card> playerCards)
@@ -151,11 +156,11 @@ public class BattleManager : MonoBehaviour
             Debug.Log("Enemy: " + currentEnemyCard.cardName);
 
             
-            yield return StartCoroutine(PlayCardAnimation(GetCardTarget(currentPlayerCard) ,playerCardIndex));
+            yield return StartCoroutine(PlayCardAnimation(GetCardTarget(currentPlayerCard, true) ,playerCardIndex, true));
             currentPlayerCard.OnUseCard(Player.Instance, Enemy.Instance);
             AudioManager.Instance.PlayAudio(currentPlayerCard.elementType);
 
-            yield return StartCoroutine(PlayCardAnimation(GetCardTarget(currentEnemyCard) ,enemyCardIndex));
+            yield return StartCoroutine(PlayCardAnimation(GetCardTarget(currentEnemyCard, false) ,enemyCardIndex, false));
             currentEnemyCard.OnUseCard(Enemy.Instance, Player.Instance);
             AudioManager.Instance.PlayAudio(currentEnemyCard.elementType);
 
@@ -171,7 +176,7 @@ public class BattleManager : MonoBehaviour
             enemyCards.RemoveAt(0);
             Debug.Log("Enemy: " + currentEnemyCard.cardName);
 
-            yield return StartCoroutine(PlayCardAnimation(GetCardTarget(currentEnemyCard), enemyCardIndex));
+            yield return StartCoroutine(PlayCardAnimation(GetCardTarget(currentEnemyCard, false), enemyCardIndex, false));
             currentEnemyCard.OnUseCard(Enemy.Instance, Player.Instance);
             AudioManager.Instance.PlayAudio(currentEnemyCard.elementType);
         }
@@ -181,7 +186,7 @@ public class BattleManager : MonoBehaviour
             playerCards.RemoveAt(0);
             Debug.Log("Player: " + currentPlayerCard.cardName);
 
-            yield return StartCoroutine(PlayCardAnimation(GetCardTarget(currentPlayerCard), playerCardIndex));
+            yield return StartCoroutine(PlayCardAnimation(GetCardTarget(currentPlayerCard, true), playerCardIndex, true));
             currentPlayerCard.OnUseCard(Player.Instance, Enemy.Instance);
             AudioManager.Instance.PlayAudio(currentPlayerCard.elementType);
         }
@@ -190,7 +195,7 @@ public class BattleManager : MonoBehaviour
         PostTurnLogic();
     }
 
-    private bool GetCardTarget(Card cardToPlay)
+    private bool GetCardTarget(Card cardToPlay, bool player)
     {
         bool target;
         if (cardToPlay.elementType == ElementType.PLANT || cardToPlay.elementType == ElementType.EARTH)
@@ -200,6 +205,11 @@ public class BattleManager : MonoBehaviour
         else
         {
             target = false;
+        }
+
+        if (!player)
+        {
+            target = !target;
         }
 
         return target;

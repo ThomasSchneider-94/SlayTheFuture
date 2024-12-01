@@ -134,7 +134,7 @@ public class BattlePreparation : MonoBehaviour
         while (j < enemyHand.Count)
         {
             enemyCardButtons[j].gameObject.SetActive(true);
-
+            enemyCardButtons[j].transform.localPosition = Vector3.zero;
             enemyCardButtons[j].ApplyCard(enemyHand[j]);
             enemyCardButtons[j].HideCard();
 
@@ -143,6 +143,7 @@ public class BattlePreparation : MonoBehaviour
         while (j < BattleManager.Instance.GetMaxPlayedCard())
         {
             enemyCardButtons[j].gameObject.SetActive(false);
+            enemyCardButtons[j].transform.localPosition = Vector3.zero;
             j++;
         }
     }
