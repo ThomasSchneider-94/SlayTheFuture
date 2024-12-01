@@ -16,7 +16,7 @@ public abstract class Fighter : MonoBehaviour
     protected int hp;
     private int shield;
 
-    private readonly List<(int, int)> poison = new();
+    private List<(int, int)> poison = new();
 
     private List<Card> deck;
 
@@ -147,6 +147,12 @@ public abstract class Fighter : MonoBehaviour
         }
         ShieldChangeEvent.Invoke();
     }
+    
+    public void ResetPoison()
+    {
+        poison = new();
+    }
+
     #endregion Setter
 
     #region Getter

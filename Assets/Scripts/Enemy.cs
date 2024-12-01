@@ -31,6 +31,7 @@ public class Enemy : Fighter
         if (hp + hpDelta > maxHP)
         {
             hp = maxHP;
+            HealthChangeEvent.Invoke(hpDelta);
             return;
         }
 

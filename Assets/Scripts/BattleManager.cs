@@ -113,12 +113,16 @@ public class BattleManager : MonoBehaviour
         Player.Instance.ResetCurrentDeck();
         Enemy.Instance.ResetCurrentDeck();
 
+        Player.Instance.ResetPoison();
+        Enemy.Instance.ResetPoison();
+
         Enemy.Instance.SetHP(Enemy.Instance.GetMaxHp());
 
         Player.Instance.Draw();
         Enemy.Instance.Draw();
 
         Player.Instance.SetHP(3);
+
 
         battlePrep.ResetBattle();
     }
@@ -274,6 +278,10 @@ public class BattleManager : MonoBehaviour
     public void NextBattle()
     {
         currentFight++;
+        if (currentFight > maxFightNumber)
+        {
+            currentFight = 0;
+        }
         StopAllCoroutines();
 
         panelManager.TogglePanel(upgradePanel);
