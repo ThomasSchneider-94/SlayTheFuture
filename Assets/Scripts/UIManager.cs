@@ -31,6 +31,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private HealthBar playerHeatlthBar;
     [SerializeField] private HealthBar enemyHeatlthBar;
 
+    [Header("Perception")]
+    [SerializeField] private Image perceptionIcon;
+    [SerializeField] private TextMeshProUGUI perceptionCount;
+    [SerializeField] private Sprite noPerceptionSprite;
+    [SerializeField] private Sprite lowPerceptionSprite;
+    [SerializeField] private Sprite highPerceptionSprite;
+
     private Player player;
     private Enemy enemy;
 
@@ -46,16 +53,13 @@ public class UIManager : MonoBehaviour
         playerHeatlthBar.FillAllBars(player.GetMaxHp());
         enemyHeatlthBar.FillAllBars(enemy.GetMaxHp());
 
-        //player.PerceptionChangeEvent.AddListener();
+        player.PerceptionChangeEvent.AddListener(PerceptionUpdate);
+
+        // Perception
+        PerceptionUpdate();
     }
 
     public void ResetUI()
-    {
-        playerHeatlthBar.FillAllBars(player.GetMaxHp());
-        enemyHeatlthBar.FillAllBars(enemy.GetMaxHp());
-    }
-
-    public void ApplyUI()
     {
         playerHeatlthBar.heatlthCount.text = player.GetHP().ToString();
         playerHeatlthBar.healthBar.fillAmount = (float)player.GetHP() / player.GetMaxHp();
@@ -64,6 +68,8 @@ public class UIManager : MonoBehaviour
         enemyHeatlthBar.heatlthCount.text = enemy.GetHP().ToString();
         enemyHeatlthBar.healthBar.fillAmount = (float)enemy.GetHP() / enemy.GetMaxHp();
         enemyHeatlthBar.indicationBar.fillAmount = enemyHeatlthBar.healthBar.fillAmount;
+
+        PerceptionUpdate();
     }
 
     #region Health
@@ -131,4 +137,24 @@ public class UIManager : MonoBehaviour
         healthBar.indicationBar.fillAmount = finalFill;
     }
     #endregion Health
+
+    #region Perception
+    private void PerceptionUpdate()
+    {
+        perceptionCount.text = player.GetCurrentPerception().ToString();
+
+        if (player.GetCurrentPerception() == 0)
+        {
+            perceptionIcon.sprite = lowPerceptionSprite;
+        }
+        else if (player.GetCurrentPerception() > player.GetMaxPerception() / 2)
+        {
+            perceptionIcon.sprite = lowPerceptionSprite;
+        }
+        else
+        {
+            perceptionIcon.sprite = highPerceptionSprite;
+        }
+    }
+    #endregion Perception
 }

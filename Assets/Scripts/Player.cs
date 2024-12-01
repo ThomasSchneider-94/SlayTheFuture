@@ -11,7 +11,7 @@ public class Player : Fighter
     private readonly int maxPerception = 5;
     private bool perceptionUsedThisTurn;
 
-    public UnityEvent PerceptionChangeEvent { get; } = new UnityEvent();
+    public UnityEvent PerceptionChangeEvent { get; } = new();
 
     private void Awake()
     {
@@ -65,6 +65,7 @@ public class Player : Fighter
     {
         perception -= numberOfPerceptionUsed;
         perceptionUsedThisTurn = true;
+        PerceptionChangeEvent.Invoke();
     }
 
     public bool GetPerceptionStatus() 
@@ -75,5 +76,10 @@ public class Player : Fighter
     public void SetPerceptionStatus()
     {
         perceptionUsedThisTurn = !perceptionUsedThisTurn;
+    }
+
+    public int GetMaxPerception()
+    {
+        return maxPerception;
     }
 }
