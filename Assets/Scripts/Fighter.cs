@@ -25,6 +25,7 @@ public abstract class Fighter : MonoBehaviour
 
     public UnityEvent<int> HealthChangeEvent { get; } = new();
     public UnityEvent ShieldChangeEvent { get; } = new();
+    public UnityEvent PoisonChangeEvent { get; } = new();
 
 
     private void Start()
@@ -112,6 +113,8 @@ public abstract class Fighter : MonoBehaviour
     public void AddPoisonStack(int damage, int duration)
     {
         poison.Add((damage, duration));
+        PoisonChangeEvent.Invoke();
+
     }
 
     public void ConsumePoisonStack()
@@ -124,6 +127,7 @@ public abstract class Fighter : MonoBehaviour
                 poison.RemoveAt(i);
             }
         }
+        PoisonChangeEvent.Invoke();
     }
 
     #region Setter
@@ -165,6 +169,16 @@ public abstract class Fighter : MonoBehaviour
     public List<Card> GetDeck()
     {
         return deck;
+    }
+
+    public int GetPoison()
+    {
+        int som = 0;
+        foreach((int, int) poi in poison)
+        {
+            som += poi.Item1;
+        }
+        return som;
     }
     #endregion Getter
 }

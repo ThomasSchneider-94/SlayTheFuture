@@ -44,14 +44,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 542f583b4ceeb3942a606d0275e683a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  indicationChangeTime: 0.5
   healthChangeTime: 1
   playerHeatlthBar:
     healthBar: {fileID: 0}
-    greenRectangle: {fileID: 0}
-    redRectangle: {fileID: 0}
+    indicationBar: {fileID: 0}
+    damageColor: {r: 1, g: 0, b: 0, a: 1}
+    healColor: {r: 0, g: 1, b: 0, a: 1}
     heatlthCount: {fileID: 0}
   enemyHeatlthBar:
     healthBar: {fileID: 0}
-    greenRectangle: {fileID: 0}
-    redRectangle: {fileID: 0}
+    indicationBar: {fileID: 0}
+    damageColor: {r: 1, g: 0, b: 0, a: 1}
+    healColor: {r: 0, g: 1, b: 0, a: 1}
     heatlthCount: {fileID: 0}
+  perceptionIcon: {fileID: 0}
+  perceptionCount: {fileID: 0}
+  noPerceptionSprite: {fileID: 21300000, guid: 99185bec517e2f343b63a57ec6094c69, type: 3}
+  lowPerceptionSprite: {fileID: 21300000, guid: dd02ad5a9cb05d948881c7b48ad527d4, type: 3}
+  highPerceptionSprite: {fileID: 21300000, guid: 401d333b8a28f97408bda78b7a321d6f, type: 3}
+  playerShield: {fileID: 0}
+  playerShieldCount: {fileID: 0}
+  enemyShield: {fileID: 0}
+  enemyShieldCount: {fileID: 0}
+  playerPoison: {fileID: 0}
+  playerPoisonCount: {fileID: 0}
+  enemyPoison: {fileID: 0}
+  enemyPoisonCount: {fileID: 0}

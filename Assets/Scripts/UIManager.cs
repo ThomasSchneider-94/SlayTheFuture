@@ -44,6 +44,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject enemyShield;
     [SerializeField] private TextMeshProUGUI enemyShieldCount;
 
+    [Header("Poison")]
+    [SerializeField] private GameObject playerPoison;
+    [SerializeField] private TextMeshProUGUI playerPoisonCount;
+    [SerializeField] private GameObject enemyPoison;
+    [SerializeField] private TextMeshProUGUI enemyPoisonCount;
+
     private void Start()
     {
         // Health
@@ -62,6 +68,12 @@ public class UIManager : MonoBehaviour
         Enemy.Instance.ShieldChangeEvent.AddListener(ChangeEnemyShield);
         ChangePlayerShield();
         ChangeEnemyShield();
+
+        // Shield
+        Player.Instance.ShieldChangeEvent.AddListener(ChangePlayerPoison);
+        Enemy.Instance.ShieldChangeEvent.AddListener(ChangeEnemyPoison);
+        ChangePlayerPoison();
+        ChangeEnemyPoison();
     }
 
     public void ResetUI()
@@ -178,4 +190,23 @@ public class UIManager : MonoBehaviour
         counter.text = fighter.GetShield().ToString();
     }
     #endregion Shield
+
+    #region Poison
+    private void ChangePlayerPoison()
+    {
+        PoisonUpdate(playerPoison, playerPoisonCount, Player.Instance);
+    }
+
+    private void ChangeEnemyPoison()
+    {
+        PoisonUpdate(enemyPoison, enemyPoisonCount, Enemy.Instance);
+    }
+
+    private static void PoisonUpdate(GameObject Poison, TextMeshProUGUI counter, Fighter fighter)
+    {
+        Poison.SetActive(fighter.GetPoison() > 0);
+        counter.text = fighter.GetPoison().ToString();
+    }
+    #endregion Poison
+
 }
