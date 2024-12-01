@@ -28,6 +28,11 @@ public class PanelManager : MonoBehaviour
         {
             panel.SetActive(panel == panelToToggle);
         }
+
+        if (panelToToggle == returnPanel)
+        {
+            Time.timeScale = 0f;
+        }
     }
 
     public void ReturnToPreviousPanel()
@@ -40,6 +45,7 @@ public class PanelManager : MonoBehaviour
         {
             panel.SetActive(panel == currentPanels.Peek());
         }
+        Time.timeScale = 1f;
     }
 
     public void ReturnToPreviousPanel(InputAction.CallbackContext context)
@@ -52,6 +58,7 @@ public class PanelManager : MonoBehaviour
             }
             else
             {
+                Time.timeScale = 0f;
                 TogglePanel(returnPanel);
             }
         }
@@ -59,6 +66,7 @@ public class PanelManager : MonoBehaviour
 
     public void LoadTitleScreen()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("Thibault");
     }
 
