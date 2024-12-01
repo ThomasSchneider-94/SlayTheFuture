@@ -87,10 +87,9 @@ public class UIManager : MonoBehaviour
     {
         float t = 0;
         float initFill = healthBar.healthBar.fillAmount;
-        float initScore = fighter.GetHP() - hpDelta;
-
         float finalFill = (float)fighter.GetHP() / fighter.GetMaxHp();
-        float finalScore = fighter.GetHP();
+
+        healthBar.heatlthCount.text = fighter.GetHP().ToString();
 
         if (hpDelta > 0)
         {
@@ -112,7 +111,6 @@ public class UIManager : MonoBehaviour
 
         while (t < healthChangeTime)
         {
-            healthBar.heatlthCount.text = ((int)Mathf.Lerp(initScore, finalScore, t / healthChangeTime)).ToString();
             healthBar.healthBar.fillAmount = Mathf.Lerp(initFill, finalFill, t / healthChangeTime);
 
             t += Time.deltaTime;
@@ -130,9 +128,7 @@ public class UIManager : MonoBehaviour
                 yield return null;
             }
         }
-        
 
-        healthBar.heatlthCount.text = fighter.GetHP().ToString();
         healthBar.healthBar.fillAmount = finalFill;
         healthBar.indicationBar.fillAmount = finalFill;
     }

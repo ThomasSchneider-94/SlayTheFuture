@@ -59,6 +59,7 @@ public class Player : Fighter
         {
             perception = maxPerception;
         }
+        PerceptionChangeEvent.Invoke();
     }
 
     public void UsePerception(int numberOfPerceptionUsed)
