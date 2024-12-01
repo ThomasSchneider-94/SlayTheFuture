@@ -20,7 +20,10 @@ public class PostBattle : MonoBehaviour
     }
 
     public void HealInBetweenBattle(){
-        
+        Debug.Log(Player.Instance.GetHP());
+        Player.Instance.SetHP(Player.Instance.GetMaxHp());
+        Debug.Log(Player.Instance.GetHP());
+
     }
 
 

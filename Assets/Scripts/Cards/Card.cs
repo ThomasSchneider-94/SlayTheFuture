@@ -78,7 +78,7 @@ public class Card
 
     void ShieldBreak(Fighter receiver)
     {
-        receiver.SetShield(receiver.GetShield());
+        receiver.SetShield(-receiver.GetShield());
     }
 
 
