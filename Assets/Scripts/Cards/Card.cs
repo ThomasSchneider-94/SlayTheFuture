@@ -60,11 +60,6 @@ public class Card
         thrower.SetHP(heal[currentLevel]);
     }
 
-    void InflictPoison(Fighter receiver)
-    {
-        receiver.AddPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
-    }
-
     public void UpgardeCard()
     {
         if (currentLevel < 2)

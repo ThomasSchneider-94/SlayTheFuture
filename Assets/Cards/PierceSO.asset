@@ -20,7 +20,7 @@ MonoBehaviour:
   heal: 000000000000000000000000
   poisonDamage: 000000000000000000000000
   poisonDuration: 000000000000000000000000
-  elementType: 0
+  elementType: 2
   sprite:
   - {fileID: 21300000, guid: 3f975190fedcbe6478e62b42e88f8462, type: 3}
   - {fileID: 21300000, guid: 54e29d4bbc6bc334286c4625aa1eae8f, type: 3}

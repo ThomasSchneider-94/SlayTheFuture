@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.U2D;
@@ -105,7 +106,7 @@ public class BattleManager : MonoBehaviour
         battlePrep.ResetBattle();
     }
 
-    public void PlayTurn(List<Card> playerCards)
+    public IEnumerator PlayTurn(List<Card> playerCards)
     {
         // Joueur les cartes de manières séquentielles -> OK
 
@@ -122,7 +123,10 @@ public class BattleManager : MonoBehaviour
             Debug.Log("Enemy: " + currentEnemyCard.cardName);
 
             currentPlayerCard.OnUseCard(Player.Instance, Enemy.Instance);
+            Debug.Log("Card played");
+            yield return StartCoroutine(AudioManager.Instance.PlayAudio(currentPlayerCard.elementType));
             currentEnemyCard.OnUseCard(Enemy.Instance, Player.Instance);
+            yield return StartCoroutine(AudioManager.Instance.PlayAudio(currentEnemyCard.elementType));
         }
 
         // On vérifie si l'enemy a encore des cartes à jouer.
@@ -133,6 +137,7 @@ public class BattleManager : MonoBehaviour
             enemyCards.RemoveAt(0);
             Debug.Log("Enemy: " + currentEnemyCard.cardName);
             currentEnemyCard.OnUseCard(Enemy.Instance, Player.Instance);
+            yield return StartCoroutine(AudioManager.Instance.PlayAudio(currentEnemyCard.elementType));
         }
         while (playerCards.Count > 0)
         {
@@ -140,6 +145,7 @@ public class BattleManager : MonoBehaviour
             playerCards.RemoveAt(0);
             Debug.Log("Player: " + currentPlayerCard.cardName);
             currentPlayerCard.OnUseCard(Player.Instance, Enemy.Instance);
+            yield return StartCoroutine(AudioManager.Instance.PlayAudio(currentPlayerCard.elementType));
         }
 
         // On passe à la logique post-tour
@@ -191,5 +197,21 @@ public class BattleManager : MonoBehaviour
     public int GetMaxPlayedCard()
     {
         return maxPlayedCard;
+    }
+
+    public CardSO GetRandomCardSO()
+    {
+        CardSO cardSO = UnityEngine.Random.Range(0, 5) switch
+        {
+            0 => dmgCard,
+            1 => HealCard,
+            2 => shieldCard,
+            3 => PoisonCard,
+            4 => PierceCard,
+
+        };
+        return cardSO;
+            
+            ;
     }
 }
