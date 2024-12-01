@@ -49,6 +49,11 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private List<String> enemyDeckList;
     [SerializeField] private List<Sprite> enemySpriteList;
 
+    [Header("Panel Manager")]
+    [SerializeField] private PanelManager panelManager;
+    [SerializeField] private GameObject upgradePanel;
+    [SerializeField] private GameObject gameOverPanel;
+
     private readonly Dictionary<string, List<Card>> allDeckCards = new();
 
     private void Awake()
@@ -97,7 +102,7 @@ public class BattleManager : MonoBehaviour
         }
     }
     
-    private void InitiateBattle()
+    public void InitiateBattle()
     {
         // initialiser le deck de l'enemy
         // Shuffle les decks du player et de l'enemy
@@ -107,6 +112,8 @@ public class BattleManager : MonoBehaviour
         // Shuffle
         Player.Instance.ResetCurrentDeck();
         Enemy.Instance.ResetCurrentDeck();
+
+        Enemy.Instance.SetHP(Enemy.Instance.GetMaxHp());
 
         Player.Instance.Draw();
         Enemy.Instance.Draw();
@@ -185,6 +192,8 @@ public class BattleManager : MonoBehaviour
             yield return StartCoroutine(PlayCardAnimation(GetCardTarget(currentEnemyCard, false), enemyCardIndex, false));
             currentEnemyCard.OnUseCard(Enemy.Instance, Player.Instance);
             AudioManager.Instance.PlayAudio(currentEnemyCard.elementType);
+
+            enemyCardIndex++;
         }
         while (playerCards.Count > 0)
         {
@@ -195,6 +204,8 @@ public class BattleManager : MonoBehaviour
             yield return StartCoroutine(PlayCardAnimation(GetCardTarget(currentPlayerCard, true), playerCardIndex, true));
             currentPlayerCard.OnUseCard(Player.Instance, Enemy.Instance);
             AudioManager.Instance.PlayAudio(currentPlayerCard.elementType);
+
+            playerCardIndex++;
         }
 
         // On passe à la logique post-tour
@@ -254,15 +265,16 @@ public class BattleManager : MonoBehaviour
 
     public void GameOver()
     {
-        // TODO : implémenter la logique de défaite
-        Application.Quit();
+        StopAllCoroutines();
+        panelManager.TogglePanel(gameOverPanel);
     }
 
     public void NextBattle()
     {
-        // TODO : loot de fin de combat à implémenter
         currentFight++;
-        InitiateBattle();
+        StopAllCoroutines();
+
+        panelManager.TogglePanel(upgradePanel);
     }
 
     public int GetMaxPlayedCard()

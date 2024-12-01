@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PanelManager : MonoBehaviour
 {
@@ -54,5 +55,15 @@ public class PanelManager : MonoBehaviour
                 TogglePanel(returnPanel);
             }
         }
+    }
+
+    public void LoadTitleScreen()
+    {
+        SceneManager.LoadScene("Thibault");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

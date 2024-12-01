@@ -10,6 +10,10 @@ public class PostBattle : MonoBehaviour
 
     [SerializeField] UpgradeCardManager upgradeCardManager;
 
+    [Header("Panel Manager")]
+    [SerializeField] private PanelManager panelManager;
+    [SerializeField] private GameObject mainPanel;
+
 
     public void upgradeCard(){
         upgradeCardManager.showCards();
@@ -20,11 +24,9 @@ public class PostBattle : MonoBehaviour
     }
 
     public void HealInBetweenBattle(){
-        Debug.Log(Player.Instance.GetHP());
         Player.Instance.SetHP(Player.Instance.GetMaxHp());
-        Debug.Log(Player.Instance.GetHP());
 
+        panelManager.TogglePanel(mainPanel);
+        BattleManager.Instance.InitiateBattle();
     }
-
-
 }

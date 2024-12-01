@@ -10,7 +10,11 @@ public class SwapCardManager : MonoBehaviour
     [SerializeField] GameObject cardReplacementGO;
     List<Card> deck;
 
-    
+    [Header("Panel Manager")]
+    [SerializeField] private PanelManager panelManager;
+    [SerializeField] private GameObject mainPanel;
+
+
 
     public void showCards()
     {
@@ -59,7 +63,8 @@ public class SwapCardManager : MonoBehaviour
         }
         Player.Instance.ChangeDeckCard(deck[y] , cardReplacement);
         //showCards();
-        Debug.Log("SAMARCH " + y.ToString());
+        panelManager.TogglePanel(mainPanel);
+        BattleManager.Instance.InitiateBattle();
     }
 
 }

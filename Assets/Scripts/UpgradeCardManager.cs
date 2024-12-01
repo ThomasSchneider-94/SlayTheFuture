@@ -9,9 +9,11 @@ public class UpgradeCardManager : MonoBehaviour
     [SerializeField] GameObject cardButton;
     List<Card> list3cards;
 
-    List<Card> deck;
+    [Header("Panel Manager")]
+    [SerializeField] private PanelManager panelManager;
+    [SerializeField] private GameObject mainPanel;
 
-    
+    List<Card> deck;   
 
     public void showCards()
     {
@@ -78,13 +80,11 @@ public class UpgradeCardManager : MonoBehaviour
         foreach (Transform child in this.transform){
             Destroy(child.gameObject);
         }
-    
+
         //showCards();
-        Debug.Log("SAMARCH2 " + y.ToString());
+        panelManager.TogglePanel(mainPanel);
+        BattleManager.Instance.InitiateBattle();
     }
-
-
-
 }
 
 

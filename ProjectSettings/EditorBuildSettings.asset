@@ -5,9 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Thibault.unity
+    guid: 8df2ff525ee6efa40b0ef5e174ee2270
   - enabled: 1
     path: Assets/Scenes/Thomas.unity
     guid: 7a50f186f0ec4214c97f9c21309424a5
