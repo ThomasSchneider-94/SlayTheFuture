@@ -68,7 +68,6 @@ public class BattlePreparation : MonoBehaviour
     private void CreatePlayerCardButton(int index)
     {
         CardButton button = GameObject.Instantiate<CardButton>(cardPrefab);
-
         button.transform.SetParent(handLayout.transform);
         button.transform.localScale = Vector2.one;
 
