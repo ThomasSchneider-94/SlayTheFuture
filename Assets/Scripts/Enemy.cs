@@ -35,6 +35,8 @@ public class Enemy : Fighter
         }
 
         hp += hpDelta;
+        Debug.Log("Enemy :" + hp);
+
         HealthChangeEvent.Invoke(hpDelta);
     }
 

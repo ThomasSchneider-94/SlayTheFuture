@@ -29,15 +29,15 @@ public class BattlePreparation : MonoBehaviour
 
     // Player Cards
     private readonly List<CardButton> playerCardButtons = new();
-    private readonly List<int> placedButtons = new();
+    public List<int> placedButtons = new();
 
     // Enemy cards
     private readonly List<CardButton> enemyCardButtons = new();
-    private readonly List<bool> enemyCardRevealed = new();
+    private List<bool> enemyCardRevealed = new();
 
     #region Init
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         if (BattleManager.Instance.GetMaxPlayedCard() != playerCardPosition.Count || BattleManager.Instance.GetMaxPlayedCard() != enemyCardPosition.Count)
         {
@@ -102,7 +102,6 @@ public class BattlePreparation : MonoBehaviour
         // Player Cards
         int i = 0;
         List<Card> playerHand = player.GetCurrentHand();
-        Debug.Log(playerHand.Count);
 
         while (i < playerHand.Count)
         {
@@ -120,7 +119,8 @@ public class BattlePreparation : MonoBehaviour
 
         // Enemy Cards
         int j = 0;
-        List<Card> enemyHand = enemy.GetCurrentHand();
+        List<Card> enemyHand = enemy.GetPlayedCards();
+        enemyCardRevealed = new (new bool[BattleManager.Instance.GetMaxPlayedCard()]);
 
         while (j < enemyHand.Count)
         {
@@ -177,8 +177,6 @@ public class BattlePreparation : MonoBehaviour
 
         if (player.GetCurrentPerception() > 0)
         {
-            Debug.Log(player.GetCurrentPerception());
-
             player.UsePerception(1);
 
             enemyCardButtons[index].ApplyCard();
@@ -193,13 +191,14 @@ public class BattlePreparation : MonoBehaviour
         List<Card> cardsInHand = new();
         List<Card> playerHand = player.GetCurrentHand();
 
+        foreach (int cardIndex in placedButtons)
+        {
+            cardsToPlay.Add(playerHand[cardIndex]);
+        }
+
         for (int i = 0; i < playerHand.Count; i++)
         {
-            if (placedButtons.Contains(i))
-            {
-                cardsToPlay.Add(playerHand[i]);
-            }
-            else
+            if (!placedButtons.Contains(i))
             {
                 cardsInHand.Add(playerHand[i]);
             }

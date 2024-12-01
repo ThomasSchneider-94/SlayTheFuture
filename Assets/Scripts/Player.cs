@@ -43,6 +43,7 @@ public class Player : Fighter
         }
 
         hp += hpDelta;
+        Debug.Log("Player :" + hp);
         HealthChangeEvent.Invoke(hpDelta);
     }
 
