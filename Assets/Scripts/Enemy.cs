@@ -6,7 +6,7 @@ public class Enemy : Fighter
 {
     public static Enemy Instance { get; private set; }
 
-    private readonly List<Card> playedCards = new();
+    private List<Card> playedCards = new();
 
     private void Awake()
     {
@@ -71,5 +71,10 @@ public class Enemy : Fighter
     public List<Card> GetPlayedCards()
     {
         return playedCards;
+    }
+
+    public void SetPlayedCards(List<Card> cards)
+    {
+        playedCards = cards;
     }
 }

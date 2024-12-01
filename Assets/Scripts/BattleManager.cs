@@ -118,6 +118,9 @@ public class BattleManager : MonoBehaviour
 
         Enemy.Instance.SetHP(Enemy.Instance.GetMaxHp());
 
+        Player.Instance.SetCurrentHand(new());
+        Enemy.Instance.SetPlayedCards(new());
+
         Player.Instance.Draw();
         Enemy.Instance.Draw();
 
