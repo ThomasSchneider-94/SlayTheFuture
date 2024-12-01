@@ -68,6 +68,7 @@ public class BattlePreparation : MonoBehaviour
     {
         CardButton button = GameObject.Instantiate<CardButton>(cardPrefab);
         button.transform.SetParent(handLayout.transform);
+        button.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0f);
         button.transform.localScale = Vector2.one;
 
         button.GetComponent<Button>().onClick.AddListener(delegate { ChangeButtonPosition(index); });
@@ -116,12 +117,17 @@ public class BattlePreparation : MonoBehaviour
         {
             playerCardButtons[i].gameObject.SetActive(true);
 
+            playerCardButtons[i].GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0f);
+
+
             playerCardButtons[i].ApplyCard(playerHand[i]);
 
             i++;
         }
         while (i < Player.Instance.GetMaxHandSize())
         {
+            playerCardButtons[i].GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0f);
+
             playerCardButtons[i].gameObject.SetActive(false);
             i++;
         }
@@ -169,6 +175,9 @@ public class BattlePreparation : MonoBehaviour
                 }
             }
 
+            playerCardButtons[index].GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0f);
+
+
             AudioManager.Instance.PlayCard();
         }
         else
@@ -177,6 +186,8 @@ public class BattlePreparation : MonoBehaviour
 
 
             placedButtons.Add(index);
+
+            playerCardButtons[index].GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
 
             playerCardButtons[index].transform.SetParent(playerCardPosition[placedButtons.Count - 1]);
             playerCardButtons[index].transform.localPosition = Vector2.zero;

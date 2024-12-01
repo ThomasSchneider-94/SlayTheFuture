@@ -40,6 +40,7 @@ public class Player : Fighter
         if (hp + hpDelta > maxHP)
         {
             hp = maxHP;
+            HealthChangeEvent.Invoke(hpDelta);
             return;
         }
 

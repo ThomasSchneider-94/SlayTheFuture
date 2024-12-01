@@ -118,6 +118,8 @@ public class BattleManager : MonoBehaviour
         Player.Instance.Draw();
         Enemy.Instance.Draw();
 
+        Player.Instance.SetHP(3);
+
         battlePrep.ResetBattle();
     }
 
