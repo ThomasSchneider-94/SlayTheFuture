@@ -53,6 +53,7 @@ MonoBehaviour:
   HealCard: {fileID: 11400000, guid: 3604c5de12bec13488e60c4549f9edea, type: 2}
   PierceCard: {fileID: 11400000, guid: d22bb11fd7c085f4a9b8c9665f6d4049, type: 2}
   PoisonCard: {fileID: 11400000, guid: 34f3a73c611effd4cbba21b3585b2595, type: 2}
+  animationTime: 1
 --- !u!114 &4720166308247613571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,6 +67,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handLayout: {fileID: 0}
+  startButton: {fileID: 0}
   playerCardPosition:
   - {fileID: 0}
   - {fileID: 0}
