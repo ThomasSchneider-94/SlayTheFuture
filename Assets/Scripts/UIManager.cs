@@ -147,7 +147,7 @@ public class UIManager : MonoBehaviour
         {
             perceptionIcon.sprite = lowPerceptionSprite;
         }
-        else if (player.GetCurrentPerception() > player.GetMaxPerception() / 2)
+        else if (player.GetCurrentPerception() < player.GetMaxPerception() / 2)
         {
             perceptionIcon.sprite = lowPerceptionSprite;
         }
