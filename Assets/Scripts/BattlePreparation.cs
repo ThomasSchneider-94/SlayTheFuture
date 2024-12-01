@@ -171,6 +171,8 @@ public class BattlePreparation : MonoBehaviour
                     playerCardButtons[i].transform.SetAsLastSibling();
                 }
             }
+
+            AudioManager.Instance.PlayCard();
         }
         else
         {
@@ -181,6 +183,8 @@ public class BattlePreparation : MonoBehaviour
 
             playerCardButtons[index].transform.SetParent(playerCardPosition[placedButtons.Count - 1]);
             playerCardButtons[index].transform.localPosition = Vector2.zero;
+
+            AudioManager.Instance.PlayCard();
         }
     }
 
@@ -195,6 +199,8 @@ public class BattlePreparation : MonoBehaviour
             enemyCardButtons[index].ApplyCard();
 
             enemyCardRevealed[index] = true;
+
+            AudioManager.Instance.PlayCard();
         }
     }
 
