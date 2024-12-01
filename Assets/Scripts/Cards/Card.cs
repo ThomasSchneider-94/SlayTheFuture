@@ -55,10 +55,32 @@ public class Card
 
     public void OnUseCard(Fighter thrower, Fighter receiver)
     {
+
+        switch (elementType)
+        {
+            case ElementType.POISON:
+                InflictPoison(receiver);
+                break;
+            case ElementType.FIRE:
+                ShieldBreak(receiver);
+                break;
+        }
         receiver.SetShield(-damage[currentLevel]);
         thrower.SetShield(shield[currentLevel]);
         thrower.SetHP(heal[currentLevel]);
     }
+
+
+    void InflictPoison(Fighter receiver)
+    {
+        receiver.AddPoisonStack(poisonDamage[currentLevel], poisonDuration[currentLevel]);
+    }
+
+    void ShieldBreak(Fighter receiver)
+    {
+        receiver.SetShield(receiver.GetShield());
+    }
+
 
     public void UpgardeCard()
     {
