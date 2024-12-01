@@ -3,12 +3,12 @@
     "maps": [
         {
             "name": "menu",
-            "id": "49f04a47-382a-4cbb-86cc-176e7bf1a53f",
+            "id": "217894aa-35eb-4d6d-a2f9-8851b9cbcbff",
             "actions": [
                 {
-                    "name": "Return",
+                    "name": "CloseSettingsOnEscape",
                     "type": "Button",
-                    "id": "0c0de733-6b4f-44df-bf58-321a6bcdeaaa",
+                    "id": "364bd6b1-7f6e-43cc-bf19-7a000da44990",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -18,12 +18,12 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "b48a3cc4-6c5f-4725-8f77-450af03122b4",
+                    "id": "dca98de6-40a0-4129-8b97-3d4162d5d0e1",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Return",
+                    "action": "CloseSettingsOnEscape",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 
 public class MenuButton : MonoBehaviour
 {
-    [SerializeField] GameObject background;
-    [SerializeField] GameObject buttonClose;
+    [SerializeField] GameObject main;
+    [SerializeField] GameObject settings;
     public void Begin()
     {
         SceneManager.LoadScene("Thomas");
@@ -18,14 +18,14 @@ public class MenuButton : MonoBehaviour
 
     public void Settings()
     {
-        background.SetActive(true);
-        buttonClose.SetActive(true);
+        main.SetActive(false);
+        settings.SetActive(true);
     }
 
     public void CloseSettings()
     {
-    background.SetActive(false); 
-    buttonClose.SetActive(false);
+    main.SetActive(true); 
+    settings.SetActive(false);
     }
 
     public void CloseSettingsOnEscape(InputAction.CallbackContext context)
