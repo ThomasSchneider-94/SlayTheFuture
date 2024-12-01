@@ -24,6 +24,7 @@ public abstract class Fighter : MonoBehaviour
     private readonly List<Card> currentDeck = new();
 
     public UnityEvent<int> HealthChangeEvent { get; } = new();
+    public UnityEvent ShieldChangeEvent { get; } = new();
 
 
     private void Start()
@@ -117,7 +118,7 @@ public abstract class Fighter : MonoBehaviour
     {
         for (int i = 0; i < poison.Count; i++)
         {
-            SetHP(poison[i].Item1);
+            SetHP(-poison[i].Item1);
             if (poison[i].Item1 == 1)
             {
                 poison.RemoveAt(i);
@@ -136,6 +137,7 @@ public abstract class Fighter : MonoBehaviour
             SetHP(shield);
             shield = 0;
         }
+        ShieldChangeEvent.Invoke();
     }
     #endregion Setter
 

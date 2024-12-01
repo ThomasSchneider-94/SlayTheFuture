@@ -19,11 +19,9 @@ public class BattlePreparation : MonoBehaviour
 
     [Header("Player")]
     [SerializeField] private List<Transform> playerCardPosition;
-    private Player player;
 
     [Header("Enemy")]
     [SerializeField] private List<Transform> enemyCardPosition;
-    private Enemy enemy;
 
     [Header("Prefab")]
     [SerializeField] private CardButton cardPrefab;
@@ -48,17 +46,14 @@ public class BattlePreparation : MonoBehaviour
             Debug.LogError("Max play card and played card position size does not match");
         }
 
-        player = Player.Instance;
-        enemy = Enemy.Instance;
-
         CreateCardButtons();
 
-        handLayout.constraintCount = player.GetMaxHandSize();
+        handLayout.constraintCount = Player.Instance.GetMaxHandSize();
     }
 
     private void CreateCardButtons()
     {
-        for (int i = 0; i < player.GetMaxHandSize(); i++)
+        for (int i = 0; i < Player.Instance.GetMaxHandSize(); i++)
         {
             CreatePlayerCardButton(i);
         }
@@ -109,12 +104,13 @@ public class BattlePreparation : MonoBehaviour
         foreach (Button button in buttons)
         {
             button.interactable = true;
+            button.gameObject.SetActive(true);
         }
         startButton.interactable = true;
 
         // Player Cards
         int i = 0;
-        List<Card> playerHand = player.GetCurrentHand();
+        List<Card> playerHand = Player.Instance.GetCurrentHand();
 
         while (i < playerHand.Count)
         {
@@ -124,7 +120,7 @@ public class BattlePreparation : MonoBehaviour
 
             i++;
         }
-        while (i < player.GetMaxHandSize())
+        while (i < Player.Instance.GetMaxHandSize())
         {
             playerCardButtons[i].gameObject.SetActive(false);
             i++;
@@ -132,7 +128,7 @@ public class BattlePreparation : MonoBehaviour
 
         // Enemy Cards
         int j = 0;
-        List<Card> enemyHand = enemy.GetPlayedCards();
+        List<Card> enemyHand = Enemy.Instance.GetPlayedCards();
         enemyCardRevealed = new (new bool[BattleManager.Instance.GetMaxPlayedCard()]);
 
         while (j < enemyHand.Count)
@@ -192,9 +188,9 @@ public class BattlePreparation : MonoBehaviour
     {
         if (enemyCardRevealed[index]) { return; }
 
-        if (player.GetCurrentPerception() > 0)
+        if (Player.Instance.GetCurrentPerception() > 0)
         {
-            player.UsePerception(1);
+            Player.Instance.UsePerception(1);
 
             enemyCardButtons[index].ApplyCard();
 
@@ -208,7 +204,7 @@ public class BattlePreparation : MonoBehaviour
     {
         List<Card> cardsToPlay = new();
         List<Card> cardsInHand = new();
-        List<Card> playerHand = player.GetCurrentHand();
+        List<Card> playerHand = Player.Instance.GetCurrentHand();
 
         foreach (int cardIndex in placedButtons)
         {
@@ -223,7 +219,7 @@ public class BattlePreparation : MonoBehaviour
             }
         }
 
-        player.SetCurrentHand(cardsInHand);
+        Player.Instance.SetCurrentHand(cardsInHand);
 
         foreach (Button button in buttons) 
         {
@@ -233,4 +229,16 @@ public class BattlePreparation : MonoBehaviour
 
         StartCoroutine(BattleManager.Instance.PlayTurn(cardsToPlay));
     }
+
+    public CardButton GetCardButton(bool player, int index)
+    {
+        if (player)
+        {
+            return playerCardButtons[placedButtons[index]];
+        }
+        else
+        {
+            return enemyCardButtons[index];
+        }
+    } 
 }

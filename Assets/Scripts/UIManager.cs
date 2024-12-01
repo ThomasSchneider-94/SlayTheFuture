@@ -38,49 +38,56 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite lowPerceptionSprite;
     [SerializeField] private Sprite highPerceptionSprite;
 
-    private Player player;
-    private Enemy enemy;
+    [Header("Shield")]
+    [SerializeField] private GameObject playerShield;
+    [SerializeField] private TextMeshProUGUI playerShieldCount;
+    [SerializeField] private GameObject enemyShield;
+    [SerializeField] private TextMeshProUGUI enemyShieldCount;
 
     private void Start()
     {
-        player = Player.Instance;
-        enemy = Enemy.Instance;
-
         // Health
-        player.HealthChangeEvent.AddListener(ChangePlayerHealthBar);
-        enemy.HealthChangeEvent.AddListener(ChangeEnemyHealthBar);
+        Player.Instance.HealthChangeEvent.AddListener(ChangePlayerHealthBar);
+        Enemy.Instance.HealthChangeEvent.AddListener(ChangeEnemyHealthBar);
 
-        playerHeatlthBar.FillAllBars(player.GetMaxHp());
-        enemyHeatlthBar.FillAllBars(enemy.GetMaxHp());
-
-        player.PerceptionChangeEvent.AddListener(PerceptionUpdate);
+        playerHeatlthBar.FillAllBars(Player.Instance.GetMaxHp());
+        enemyHeatlthBar.FillAllBars(Enemy.Instance.GetMaxHp());
 
         // Perception
+        Player.Instance.PerceptionChangeEvent.AddListener(PerceptionUpdate);
         PerceptionUpdate();
+        
+        // Shield
+        Player.Instance.ShieldChangeEvent.AddListener(ChangePlayerShield);
+        Enemy.Instance.ShieldChangeEvent.AddListener(ChangeEnemyShield);
+        ChangePlayerShield();
+        ChangeEnemyShield();
     }
 
     public void ResetUI()
     {
-        playerHeatlthBar.heatlthCount.text = player.GetHP().ToString();
-        playerHeatlthBar.healthBar.fillAmount = (float)player.GetHP() / player.GetMaxHp();
+        playerHeatlthBar.heatlthCount.text = Player.Instance.GetHP().ToString();
+        playerHeatlthBar.healthBar.fillAmount = (float)Player.Instance.GetHP() / Player.Instance.GetMaxHp();
         playerHeatlthBar.indicationBar.fillAmount = playerHeatlthBar.healthBar.fillAmount;
 
-        enemyHeatlthBar.heatlthCount.text = enemy.GetHP().ToString();
-        enemyHeatlthBar.healthBar.fillAmount = (float)enemy.GetHP() / enemy.GetMaxHp();
+        enemyHeatlthBar.heatlthCount.text = Enemy.Instance.GetHP().ToString();
+        enemyHeatlthBar.healthBar.fillAmount = (float)Enemy.Instance.GetHP() / Enemy.Instance.GetMaxHp();
         enemyHeatlthBar.indicationBar.fillAmount = enemyHeatlthBar.healthBar.fillAmount;
 
         PerceptionUpdate();
+        ChangePlayerShield();
+        ChangeEnemyShield();
     }
 
     #region Health
     private void ChangePlayerHealthBar(int hpDelta)
     {
-        StartCoroutine(ChangeHealthBar(hpDelta,player, playerHeatlthBar));
+        StartCoroutine(ChangeHealthBar(hpDelta, Player.Instance, playerHeatlthBar));
     }
 
     private void ChangeEnemyHealthBar(int hpDelta)
     {
-        StartCoroutine(ChangeHealthBar(hpDelta, enemy, enemyHeatlthBar));
+        StartCoroutine(ChangeHealthBar(hpDelta, Enemy.Instance, enemyHeatlthBar));
     }
 
     private IEnumerator ChangeHealthBar(int hpDelta, Fighter fighter, HealthBar healthBar)
@@ -137,13 +144,13 @@ public class UIManager : MonoBehaviour
     #region Perception
     private void PerceptionUpdate()
     {
-        perceptionCount.text = player.GetCurrentPerception().ToString();
+        perceptionCount.text = Player.Instance.GetCurrentPerception().ToString();
 
-        if (player.GetCurrentPerception() == 0)
+        if (Player.Instance.GetCurrentPerception() == 0)
         {
             perceptionIcon.sprite = noPerceptionSprite;
         }
-        else if (player.GetCurrentPerception() < player.GetMaxPerception() / 2)
+        else if (Player.Instance.GetCurrentPerception() < Player.Instance.GetMaxPerception() / 2)
         {
             perceptionIcon.sprite = lowPerceptionSprite;
         }
@@ -153,4 +160,22 @@ public class UIManager : MonoBehaviour
         }
     }
     #endregion Perception
+
+    #region Shield
+    private void ChangePlayerShield()
+    {
+        ShieldUpdate(playerShield, playerShieldCount, Player.Instance);
+    }
+
+    private void ChangeEnemyShield()
+    {
+        ShieldUpdate(enemyShield, enemyShieldCount, Enemy.Instance);
+    }
+
+    private static void ShieldUpdate(GameObject shield, TextMeshProUGUI counter, Fighter fighter)
+    {
+        shield.SetActive(fighter.GetShield() > 0);
+        counter.text = fighter.GetShield().ToString();
+    }
+    #endregion Shield
 }

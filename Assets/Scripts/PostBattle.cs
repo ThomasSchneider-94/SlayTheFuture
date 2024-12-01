@@ -8,8 +8,11 @@ public class PostBattle : MonoBehaviour
 
     [SerializeField] SwapCardManager swapCardManager;
 
-    public void upgradeCard(){
+    [SerializeField] UpgradeCardManager upgradeCardManager;
 
+
+    public void upgradeCard(){
+        upgradeCardManager.showCards();
     }
 
     public void swapCard(){

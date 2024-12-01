@@ -216,8 +216,8 @@ public class BattleManager : MonoBehaviour
         Player.Instance.ConsumePoisonStack();
 
         // Supprimer les shields à la fin du tours
-        Player.Instance.SetShield(Player.Instance.GetShield());
-        Enemy.Instance.SetShield(Enemy.Instance.GetShield());
+        Player.Instance.SetShield(-Player.Instance.GetShield());
+        Enemy.Instance.SetShield(-Enemy.Instance.GetShield());
 
         // Si le joueur n'a pas utilisé de perception se tour, lui augmenter
         if (!Player.Instance.GetPerceptionStatus())
