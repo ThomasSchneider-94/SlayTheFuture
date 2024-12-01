@@ -37,7 +37,7 @@ public class BattlePreparation : MonoBehaviour
 
     #region Init
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         if (BattleManager.Instance.GetMaxPlayedCard() != playerCardPosition.Count || BattleManager.Instance.GetMaxPlayedCard() != enemyCardPosition.Count)
         {
