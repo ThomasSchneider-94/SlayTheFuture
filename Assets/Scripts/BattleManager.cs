@@ -278,6 +278,10 @@ public class BattleManager : MonoBehaviour
     public void NextBattle()
     {
         currentFight++;
+        if (currentFight > maxFightNumber)
+        {
+            currentFight = 0;
+        }
         StopAllCoroutines();
 
         panelManager.TogglePanel(upgradePanel);
