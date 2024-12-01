@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : Fighter
 {
@@ -9,6 +10,8 @@ public class Player : Fighter
     private int perception;
     private readonly int maxPerception = 5;
     private bool perceptionUsedThisTurn;
+
+    public UnityEvent PerceptionChangeEvent { get; } = new UnityEvent();
 
     private void Awake()
     {
@@ -40,6 +43,7 @@ public class Player : Fighter
         }
 
         hp += hpDelta;
+        HealthChangeEvent.Invoke(hpDelta);
     }
 
     public int GetCurrentPerception()

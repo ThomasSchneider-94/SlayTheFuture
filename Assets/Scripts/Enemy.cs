@@ -35,6 +35,7 @@ public class Enemy : Fighter
         }
 
         hp += hpDelta;
+        HealthChangeEvent.Invoke(hpDelta);
     }
 
     public override void Draw()

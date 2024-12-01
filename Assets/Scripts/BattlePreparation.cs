@@ -17,16 +17,15 @@ public class BattlePreparation : MonoBehaviour
     [SerializeField] private GridLayoutGroup handLayout;
 
     [Header("Player")]
-    [SerializeField] private Player player;
     [SerializeField] private List<Transform> playerCardPosition;
+    private Player player;
 
     [Header("Enemy")]
-    [SerializeField] private Enemy enemy;
     [SerializeField] private List<Transform> enemyCardPosition;
+    private Enemy enemy;
 
     [Header("Prefab")]
     [SerializeField] private CardButton cardPrefab;
-    [SerializeField] private Sprite hidenCard;
 
     // Player Cards
     private readonly List<CardButton> playerCardButtons = new();
@@ -44,6 +43,9 @@ public class BattlePreparation : MonoBehaviour
         {
             Debug.LogError("Max play card and played card position size does not match");
         }
+
+        player = Player.Instance;
+        enemy = Enemy.Instance;
 
         CreateCardButtons();
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class Fighter : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public abstract class Fighter : MonoBehaviour
 
     protected List<Card> currentHand = new();
     private readonly List<Card> currentDeck = new();
+
+    public UnityEvent<int> HealthChangeEvent { get; } = new();
+
 
     private void Start()
     {
@@ -138,6 +142,11 @@ public abstract class Fighter : MonoBehaviour
     public int GetHP()
     {
         return hp;
+    }
+
+    public int GetMaxHp()
+    {
+        return maxHP;
     }
 
     public int GetShield()

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7747797175093287761}
   - component: {fileID: 8847749257037896040}
+  - component: {fileID: 4720166308247613571}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -44,3 +45,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbda056313c9d3d4e82d98c03fff8aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxPlayedCard: 3
+  maxFightNumber: 0
+  battlePrep: {fileID: 0}
+  dmgCard: {fileID: 11400000, guid: f7e31498ed824b44d9b7e5b7c5698841, type: 2}
+  shieldCard: {fileID: 11400000, guid: 68ec093eb40b8a044b8b86e58830c6f1, type: 2}
+  HealCard: {fileID: 11400000, guid: 3604c5de12bec13488e60c4549f9edea, type: 2}
+  PierceCard: {fileID: 11400000, guid: d22bb11fd7c085f4a9b8c9665f6d4049, type: 2}
+  PoisonCard: {fileID: 11400000, guid: 34f3a73c611effd4cbba21b3585b2595, type: 2}
+--- !u!114 &4720166308247613571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3021872009607024588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f95839ade3a2f446b7e4e36f8cb35b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handLayout: {fileID: 0}
+  playerCardPosition:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  enemyCardPosition:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  cardPrefab: {fileID: 2038537327258385259, guid: c4132365e0070b8479d3bbfb0571883e, type: 3}
