@@ -15,6 +15,7 @@ public class BattlePreparation : MonoBehaviour
 
     [Header("General")]
     [SerializeField] private GridLayoutGroup handLayout;
+    [SerializeField] private Button startButton;
 
     [Header("Player")]
     [SerializeField] private List<Transform> playerCardPosition;
@@ -29,11 +30,14 @@ public class BattlePreparation : MonoBehaviour
 
     // Player Cards
     private readonly List<CardButton> playerCardButtons = new();
-    public List<int> placedButtons = new();
+    private readonly List<int> placedButtons = new();
 
     // Enemy cards
     private readonly List<CardButton> enemyCardButtons = new();
     private List<bool> enemyCardRevealed = new();
+
+    // Both
+    private readonly List<Button> buttons = new();
 
     #region Init
     // Start is called before the first frame update
@@ -72,6 +76,7 @@ public class BattlePreparation : MonoBehaviour
         button.transform.localScale = Vector2.one;
 
         button.GetComponent<Button>().onClick.AddListener(delegate { ChangeButtonPosition(index); });
+        buttons.Add(button.GetComponent<Button>());
 
         playerCardButtons.Add(button);
     }
@@ -85,6 +90,7 @@ public class BattlePreparation : MonoBehaviour
         button.transform.localPosition = Vector2.zero;
 
         button.GetComponent<Button>().onClick.AddListener(delegate { RevealCard(index); });
+        buttons.Add(button.GetComponent<Button>());
 
         enemyCardButtons.Add(button);
         enemyCardRevealed.Add(false);
@@ -98,6 +104,13 @@ public class BattlePreparation : MonoBehaviour
             playerCardButtons[buttonIndex].transform.SetParent(handLayout.transform);
         }
         placedButtons.Clear();
+
+        // Buttons
+        foreach (Button button in buttons)
+        {
+            button.interactable = true;
+        }
+        startButton.interactable = true;
 
         // Player Cards
         int i = 0;
@@ -158,6 +171,8 @@ public class BattlePreparation : MonoBehaviour
                     playerCardButtons[i].transform.SetAsLastSibling();
                 }
             }
+
+            AudioManager.Instance.PlayCard();
         }
         else
         {
@@ -168,6 +183,8 @@ public class BattlePreparation : MonoBehaviour
 
             playerCardButtons[index].transform.SetParent(playerCardPosition[placedButtons.Count - 1]);
             playerCardButtons[index].transform.localPosition = Vector2.zero;
+
+            AudioManager.Instance.PlayCard();
         }
     }
 
@@ -182,6 +199,8 @@ public class BattlePreparation : MonoBehaviour
             enemyCardButtons[index].ApplyCard();
 
             enemyCardRevealed[index] = true;
+
+            AudioManager.Instance.PlayCard();
         }
     }
 
@@ -205,6 +224,12 @@ public class BattlePreparation : MonoBehaviour
         }
 
         player.SetCurrentHand(cardsInHand);
+
+        foreach (Button button in buttons) 
+        {
+            button.interactable = false;
+        }
+        startButton.interactable = false;
 
         StartCoroutine(BattleManager.Instance.PlayTurn(cardsToPlay));
     }

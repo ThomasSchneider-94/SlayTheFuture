@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioSource backgroundMusic;
+    [SerializeField] private AudioSource cardSound;
 
     public static AudioManager Instance { get; private set; }
 
@@ -26,6 +27,11 @@ public class AudioManager : MonoBehaviour
     {
         backgroundMusic.loop = true;
         backgroundMusic.Play();
+    }
+
+    public void PlayCard()
+    {
+        cardSound.Play();
     }
 
     public IEnumerator PlayAudio(ElementType elementType)

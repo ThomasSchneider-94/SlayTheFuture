@@ -171,6 +171,10 @@ public class BattleManager : MonoBehaviour
         {
             Player.Instance.AddPerception();
         }
+        else
+        {
+            Player.Instance.SetPerceptionStatus();
+        }
 
         // Vérifier si il reste des cartes dans le deck du joueur et dans le deck de l'enemy
         Player.Instance.Draw();

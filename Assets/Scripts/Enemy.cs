@@ -25,6 +25,7 @@ public class Enemy : Fighter
         if (hp + hpDelta <= 0)
         {
             BattleManager.Instance.NextBattle();
+            Debug.LogError("Fin de jeu");
             return;
         }
 

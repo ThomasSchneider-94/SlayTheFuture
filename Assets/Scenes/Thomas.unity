@@ -1890,6 +1890,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 611399135}
     - target: {fileID: 4720166308247613571, guid: a087c5922fdf7ba49b7c57d895c49622, type: 3}
+      propertyPath: startButton
+      value: 
+      objectReference: {fileID: 738987427857527094}
+    - target: {fileID: 4720166308247613571, guid: a087c5922fdf7ba49b7c57d895c49622, type: 3}
       propertyPath: enemyCardPosition.Array.data[0]
       value: 
       objectReference: {fileID: 1026289451}

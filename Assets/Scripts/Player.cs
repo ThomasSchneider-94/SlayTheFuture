@@ -31,7 +31,8 @@ public class Player : Fighter
     {
         if (hp + hpDelta <= 0)
         {
-            Debug.Log("GameOver");
+            Debug.LogError("GameOver");
+
             BattleManager.Instance.GameOver();
             return;
         }
@@ -59,6 +60,7 @@ public class Player : Fighter
         {
             perception = maxPerception;
         }
+        PerceptionChangeEvent.Invoke();
     }
 
     public void UsePerception(int numberOfPerceptionUsed)
