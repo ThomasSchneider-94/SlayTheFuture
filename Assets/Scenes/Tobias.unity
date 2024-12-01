@@ -355,6 +355,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2309036196448501713, guid: 904ce2f9eb713474eb6be98c1efe26f4, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5089090814471613151, guid: 099d7925f71c5814b8ccb5ba64b14123, type: 2}
+    - target: {fileID: 4485469918741616046, guid: 904ce2f9eb713474eb6be98c1efe26f4, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 5737080619057837594, guid: 099d7925f71c5814b8ccb5ba64b14123, type: 2}
     - target: {fileID: 4562473378370247349, guid: 904ce2f9eb713474eb6be98c1efe26f4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 104.4498
@@ -399,6 +407,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7138821747410363909, guid: 904ce2f9eb713474eb6be98c1efe26f4, type: 3}
+      propertyPath: audioMixer
+      value: 
+      objectReference: {fileID: 24100000, guid: 099d7925f71c5814b8ccb5ba64b14123, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
