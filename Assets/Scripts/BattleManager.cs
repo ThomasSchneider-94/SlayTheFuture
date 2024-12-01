@@ -9,7 +9,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.U2D;
-
+using UnityEngine.UI;
 
 
 [Serializable]
@@ -25,6 +25,7 @@ public class JsonDeck
     public string[] content;
 }
 
+
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
@@ -32,7 +33,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private int maxPlayedCard = 3;
     [SerializeField] private int maxFightNumber;
     [SerializeField] private BattlePreparation battlePrep;
-    private int currentFight;
+    private int currentFight = 0;
 
     [Header("CardSO")]
     [SerializeField] private CardSO dmgCard;
@@ -43,6 +44,10 @@ public class BattleManager : MonoBehaviour
 
     [Header("Animation")]
     [SerializeField] private float animationTime;
+
+    [Header("Combat")]
+    [SerializeField] private List<String> enemyDeckList;
+    [SerializeField] private List<Sprite> enemySpriteList;
 
     private readonly Dictionary<string, List<Card>> allDeckCards = new();
 
@@ -96,7 +101,8 @@ public class BattleManager : MonoBehaviour
     {
         // initialiser le deck de l'enemy
         // Shuffle les decks du player et de l'enemy
-        Enemy.Instance.InitDeck(allDeckCards["AttackerDeck"]);
+        Enemy.Instance.InitDeck(allDeckCards[enemyDeckList[currentFight]]);
+        Enemy.Instance.GetComponent<Image>().sprite = enemySpriteList[currentFight];
 
         // Shuffle
         Player.Instance.ResetCurrentDeck();
@@ -255,8 +261,6 @@ public class BattleManager : MonoBehaviour
     public void NextBattle()
     {
         // TODO : loot de fin de combat à implémenter
-
-
         currentFight++;
         InitiateBattle();
     }
