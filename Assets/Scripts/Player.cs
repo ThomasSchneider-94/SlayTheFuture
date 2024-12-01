@@ -27,6 +27,15 @@ public class Player : Fighter
         }
     }
 
+    public override void BattleInit()
+    {
+        currentHand.Clear();
+        SetHP(3);
+
+        HealthChangeEvent.Invoke(3);
+        base.BattleInit();
+    }
+
     public override void SetHP(int hpDelta)
     {
         if (hp + hpDelta <= 0)

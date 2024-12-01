@@ -12,7 +12,6 @@ public class SwapCardManager : MonoBehaviour
 
     [Header("Panel Manager")]
     [SerializeField] private PanelManager panelManager;
-    [SerializeField] private GameObject mainPanel;
 
 
 
@@ -63,7 +62,7 @@ public class SwapCardManager : MonoBehaviour
         }
         Player.Instance.ChangeDeckCard(deck[y] , cardReplacement);
         //showCards();
-        panelManager.TogglePanel(mainPanel);
+        panelManager.ReturnToPreviousPanel();
         BattleManager.Instance.InitiateBattle();
     }
 

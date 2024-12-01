@@ -27,7 +27,6 @@ public abstract class Fighter : MonoBehaviour
     public UnityEvent ShieldChangeEvent { get; } = new();
     public UnityEvent PoisonChangeEvent { get; } = new();
 
-
     private void Start()
     {
         // TODO : initialiser le deck du joueur avec une liste de cartes
@@ -45,6 +44,21 @@ public abstract class Fighter : MonoBehaviour
         deck.Remove(oldCard);
         deck.Add(newCard);
     }
+
+    public virtual void BattleInit()
+    {
+        ResetCurrentDeck();
+        
+        Draw();
+
+        shield = 0;
+        poison.Clear();
+
+        ShieldChangeEvent.Invoke();
+        PoisonChangeEvent.Invoke();
+    }
+
+
 
     #region Current Deck
     public void ResetCurrentDeck()
@@ -146,11 +160,6 @@ public abstract class Fighter : MonoBehaviour
             shield = 0;
         }
         ShieldChangeEvent.Invoke();
-    }
-    
-    public void ResetPoison()
-    {
-        poison = new();
     }
 
     #endregion Setter

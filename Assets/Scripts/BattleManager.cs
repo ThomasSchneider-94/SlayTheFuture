@@ -55,6 +55,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
 
     private readonly Dictionary<string, List<Card>> allDeckCards = new();
+    private bool stopCoroutine = false;
+
 
     private void Awake()
     {
@@ -109,23 +111,11 @@ public class BattleManager : MonoBehaviour
         Enemy.Instance.InitDeck(allDeckCards[enemyDeckList[currentFight]]);
         Enemy.Instance.GetComponent<Image>().sprite = enemySpriteList[currentFight];
 
+        stopCoroutine = false;
+        
         // Shuffle
-        Player.Instance.ResetCurrentDeck();
-        Enemy.Instance.ResetCurrentDeck();
-
-        Player.Instance.ResetPoison();
-        Enemy.Instance.ResetPoison();
-
-        Enemy.Instance.SetHP(Enemy.Instance.GetMaxHp());
-
-        Player.Instance.SetCurrentHand(new());
-        Enemy.Instance.SetPlayedCards(new());
-
-        Player.Instance.Draw();
-        Enemy.Instance.Draw();
-
-        Player.Instance.SetHP(3);
-
+        Enemy.Instance.BattleInit();
+        Player.Instance.BattleInit();
 
         battlePrep.ResetBattle();
     }
@@ -182,9 +172,13 @@ public class BattleManager : MonoBehaviour
             currentPlayerCard.OnUseCard(Player.Instance, Enemy.Instance);
             AudioManager.Instance.PlayAudio(currentPlayerCard.elementType);
 
+            if (stopCoroutine) { yield break; }
+
             yield return StartCoroutine(PlayCardAnimation(GetCardTarget(currentEnemyCard, false) ,enemyCardIndex, false));
             currentEnemyCard.OnUseCard(Enemy.Instance, Player.Instance);
             AudioManager.Instance.PlayAudio(currentEnemyCard.elementType);
+
+            if (stopCoroutine) { yield break; }
 
             playerCardIndex++;
             enemyCardIndex++;
@@ -202,6 +196,8 @@ public class BattleManager : MonoBehaviour
             currentEnemyCard.OnUseCard(Enemy.Instance, Player.Instance);
             AudioManager.Instance.PlayAudio(currentEnemyCard.elementType);
 
+            if (stopCoroutine) { yield break; }
+
             enemyCardIndex++;
         }
         while (playerCards.Count > 0)
@@ -214,6 +210,8 @@ public class BattleManager : MonoBehaviour
             currentPlayerCard.OnUseCard(Player.Instance, Enemy.Instance);
             AudioManager.Instance.PlayAudio(currentPlayerCard.elementType);
 
+            if (stopCoroutine) { yield break; }
+
             playerCardIndex++;
         }
 
@@ -221,7 +219,7 @@ public class BattleManager : MonoBehaviour
         PostTurnLogic();
     }
 
-    private bool GetCardTarget(Card cardToPlay, bool player)
+    private static bool GetCardTarget(Card cardToPlay, bool player)
     {
         bool target;
         if (cardToPlay.elementType == ElementType.PLANT || cardToPlay.elementType == ElementType.EARTH)
@@ -274,18 +272,18 @@ public class BattleManager : MonoBehaviour
 
     public void GameOver()
     {
-        StopAllCoroutines();
+        stopCoroutine = true;
         panelManager.TogglePanel(gameOverPanel);
     }
 
     public void NextBattle()
     {
+        stopCoroutine = true;
         currentFight++;
         if (currentFight > maxFightNumber)
         {
             currentFight = 0;
         }
-        StopAllCoroutines();
 
         panelManager.TogglePanel(upgradePanel);
     }
@@ -304,6 +302,7 @@ public class BattleManager : MonoBehaviour
             2 => shieldCard,
             3 => PoisonCard,
             4 => PierceCard,
+            _ => dmgCard,
 
         };
         return cardSO;

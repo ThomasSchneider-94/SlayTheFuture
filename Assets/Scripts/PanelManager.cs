@@ -52,7 +52,7 @@ public class PanelManager : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started)
         {
-            if (currentPanels.Count > 1)
+            if (currentPanels.Count > 1 && currentPanels.Peek() == returnPanel)
             {
                 ReturnToPreviousPanel();
             }

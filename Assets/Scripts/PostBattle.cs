@@ -12,7 +12,6 @@ public class PostBattle : MonoBehaviour
 
     [Header("Panel Manager")]
     [SerializeField] private PanelManager panelManager;
-    [SerializeField] private GameObject mainPanel;
 
 
     public void upgradeCard(){
@@ -26,7 +25,7 @@ public class PostBattle : MonoBehaviour
     public void HealInBetweenBattle(){
         Player.Instance.SetHP(Player.Instance.GetMaxHp());
 
-        panelManager.TogglePanel(mainPanel);
+        panelManager.ReturnToPreviousPanel();
         BattleManager.Instance.InitiateBattle();
     }
 }

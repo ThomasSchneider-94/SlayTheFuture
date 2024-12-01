@@ -82,7 +82,7 @@ public class UpgradeCardManager : MonoBehaviour
         }
 
         //showCards();
-        panelManager.TogglePanel(mainPanel);
+        panelManager.ReturnToPreviousPanel();
         BattleManager.Instance.InitiateBattle();
     }
 }

@@ -20,6 +20,15 @@ public class Enemy : Fighter
         }
     }
 
+    public override void BattleInit()
+    {
+        playedCards.Clear();
+        hp = maxHP;
+
+        HealthChangeEvent.Invoke(maxHP);
+        base.BattleInit();
+    }
+
     public override void SetHP(int hpDelta)
     {
         if (hp + hpDelta <= 0)
