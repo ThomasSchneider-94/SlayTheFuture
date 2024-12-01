@@ -34,7 +34,7 @@ public class AudioManager : MonoBehaviour
         cardSound.Play();
     }
 
-    public IEnumerator PlayAudio(ElementType elementType)
+    public void PlayAudio(ElementType elementType)
     {
         switch (elementType)
         {
@@ -67,7 +67,5 @@ public class AudioManager : MonoBehaviour
         {
             audioSource.Play();
         }
-
-        yield return new WaitForSeconds(2);
     }
 }
