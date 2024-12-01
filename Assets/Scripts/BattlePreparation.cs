@@ -207,6 +207,6 @@ public class BattlePreparation : MonoBehaviour
 
         player.SetCurrentHand(cardsInHand);
 
-        BattleManager.Instance.PlayTurn(cardsToPlay);
+        StartCoroutine(BattleManager.Instance.PlayTurn(cardsToPlay));
     }
 }
