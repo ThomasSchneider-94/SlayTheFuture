@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.U2D;
@@ -191,5 +192,21 @@ public class BattleManager : MonoBehaviour
     public int GetMaxPlayedCard()
     {
         return maxPlayedCard;
+    }
+
+    public CardSO GetRandomCardSO()
+    {
+        CardSO cardSO = UnityEngine.Random.Range(0, 5) switch
+        {
+            0 => dmgCard,
+            1 => HealCard,
+            2 => shieldCard,
+            3 => PoisonCard,
+            4 => PierceCard,
+
+        };
+        return cardSO;
+            
+            ;
     }
 }
