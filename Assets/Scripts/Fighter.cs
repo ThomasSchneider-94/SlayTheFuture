@@ -119,9 +119,13 @@ public abstract class Fighter : MonoBehaviour
         for (int i = 0; i < poison.Count; i++)
         {
             SetHP(-poison[i].Item1);
-            if (poison[i].Item1 == 1)
+            if (poison[i].Item2 == 1)
             {
                 poison.RemoveAt(i);
+            }
+            else
+            {
+                poison[i] = (poison[i].Item1, poison[i].Item2 - 1);
             }
         }
     }
